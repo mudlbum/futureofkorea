@@ -352,6 +352,8 @@ def hero(post, category=None, out_path=None, size=(1600, 900)):
         rec = photos.fetch(post, offline=bool(os.environ.get("FOK_OFFLINE")))
         if rec and os.path.exists(rec["path"]):
             post["_photo_credit"] = photos.credit_html(rec)
+            if rec.get("alt"):
+                post["_photo_alt"] = rec["alt"]
             return photo_cover(post, rec["path"], out_path, size)
     except Exception as e:                                  # noqa: BLE001
         print(f"  photos: unavailable ({type(e).__name__}) — using typographic cover")

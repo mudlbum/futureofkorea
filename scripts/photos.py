@@ -121,6 +121,11 @@ def fetch(post: dict, *, offline: bool = False) -> dict | None:
 
         rec = {
             "path": os.path.relpath(dest, ROOT).replace("\\", "/"),
+            # Pexels supplies its own description of the photo. Using it keeps the
+            # alt text truthful once a post's artwork changes from generated art
+            # to a photograph — otherwise the old alt silently describes an image
+            # that is no longer there, which is worse than no alt at all.
+            "alt": (photo.get("alt") or "").strip(),
             "credit": credit,
             "credit_url": photo.get("photographer_url") or photo.get("url") or "",
             "source_url": photo.get("url", ""),

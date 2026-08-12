@@ -942,6 +942,9 @@ def build():
         imagegen.hero(_pmeta, h)
         if _pmeta.get("_photo_credit"):
             p["photo_credit"] = _pmeta["_photo_credit"]
+        if _pmeta.get("_photo_alt"):
+            # describe what is actually on screen, not what used to be
+            p["image_alt"] = _pmeta["_photo_alt"]
         imagegen.social_card(p["slug"], p["category"], p["title"],
                              CATS.get(p["category"], {}).get("name", ""), o)
     print(f"→ generated {len(posts)*2+1} images")
