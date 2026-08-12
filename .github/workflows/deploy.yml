@@ -29,6 +29,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build site
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: python build.py
 
       - name: Validate output
