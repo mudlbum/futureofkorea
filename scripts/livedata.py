@@ -132,35 +132,37 @@ def render(data: dict) -> str:
     if fx:
         stale = ' data-stale="1"' if fx.get("stale") else ""
         krw_usd = fx["krw_usd"]
+        # One cell, both directions. A second "₩1,000,000 buys" cell was dropped
+        # as redundant — it restated the same rate in different units.
         cells.append(
-            f'<div class="now-cell"{stale}>'
-            f'<span class="now-k">USD / KRW</span>'
-            f'<span class="now-v">₩{fx["usd_krw"]:,.2f}</span>'
-            f'<span class="now-s">₩1 = ${krw_usd:.6f}</span></div>')
-        cells.append(
-            f'<div class="now-cell"{stale}>'
-            f'<span class="now-k">₩1,000,000 buys</span>'
-            f'<span class="now-v">${1_000_000 * krw_usd:,.0f}</span>'
-            f'<span class="now-s">at today\'s mid-market rate</span></div>')
+            f'<div class="now-cell now-fx"{stale}>'
+            f'<span class="now-icon" aria-hidden="true">₩</span>'
+            f'<span class="now-k">Won / Dollar</span>'
+            f'<span class="now-v">₩{fx["usd_krw"]:,.2f}<span class="now-unit"> per $1</span></span>'
+            f'<span class="now-s">$1 = ₩{fx["usd_krw"]:,.0f} · ₩1,000 = ${1000 * krw_usd:,.2f}</span>'
+            f'</div>')
     if wx:
         stale = ' data-stale="1"' if wx.get("stale") else ""
         rng = ""
         if wx.get("high_c") is not None and wx.get("low_c") is not None:
-            rng = f'{wx["low_c"]}° – {wx["high_c"]}° today'
+            rng = f'{wx["low_c"]}° / {wx["high_c"]}° today'
         cells.append(
-            f'<div class="now-cell"{stale}>'
-            f'<span class="now-k">Seoul</span>'
-            f'<span class="now-v">{wx["glyph"]} {wx["temp_c"]}°C</span>'
-            f'<span class="now-s">{wx["label"]}{" · " + rng if rng else ""}</span></div>')
+            f'<div class="now-cell now-wx"{stale}>'
+            f'<span class="now-icon" aria-hidden="true">{wx["glyph"]}</span>'
+            f'<span class="now-k">Seoul right now</span>'
+            f'<span class="now-v">{wx["temp_c"]}<span class="now-unit">°C</span></span>'
+            f'<span class="now-s">{wx["label"]}{" · " + rng if rng else ""}</span>'
+            f'</div>')
 
     srcs = " · ".join(filter(None, [
         (fx or {}).get("source"), (wx or {}).get("source")]))
     when = (fx or wx or {}).get("fetched", "")[:10]
 
     return f"""<section class="korea-now" aria-label="Korea at a glance">
-  <div class="wrap now-grid">{''.join(cells)}
-    <p class="now-foot muted small">Updated with each build · {when} · {srcs}.
-    Indicative rates for orientation, not for transacting.</p>
+  <div class="wrap">
+    <div class="now-grid">{''.join(cells)}</div>
+    <p class="now-foot muted small">Refreshed each build · {when} · {srcs} ·
+    indicative mid-market rates, not dealing prices.</p>
   </div>
 </section>"""
 
