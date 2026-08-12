@@ -49,6 +49,7 @@ ACCENTS = {
     "living":     ["#3fd6a4", "#ffd166", "#5aa0ff"],
     "society":    ["#a882ff", "#ff9ecb", "#5aa0ff"],
     "policy":     ["#ffa733", "#ffe5a3", "#5aa0ff"],
+    "kcontent":   ["#ff2e88", "#ffd166", "#5aa0ff"],
     "_default":   ["#ff4d63", "#5aa0ff", "#3fd6a4"],
 }
 

@@ -66,6 +66,13 @@
       "blurb": "Trade, regulation, the alliance, North Korea risk, and the rules that shape everything above.",
       "accent": "#e07a00",
       "meta": "Korean trade rules, industrial policy, financial regulation, the US alliance and North Korea risk — how policy decisions in Seoul move markets and daily life."
+    },
+    {
+      "slug": "kcontent",
+      "name": "K-Content & Culture",
+      "blurb": "The business behind K-pop, film and drama — earnings, exports, tourism and what the boom actually earns.",
+      "accent": "#ff2e88",
+      "meta": "The economics of K-pop, K-drama and Korean film: agency earnings from DART filings, KOCCA export data, tourism arrivals and streaming spend — sourced, not recycled."
     }
   ],
   "nav": [
@@ -84,6 +91,10 @@
     {
       "label": "Society",
       "url": "/society/"
+    },
+    {
+      "label": "K-Content",
+      "url": "/kcontent/"
     },
     {
       "label": "Policy",

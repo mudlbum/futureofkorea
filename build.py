@@ -43,6 +43,18 @@ SITE = CFG["domain"].rstrip("/")
 CATS = {c["slug"]: c for c in CFG["categories"]}
 
 
+def live_categories(posts):
+    """Categories with at least one published post.
+
+    A category page with no articles is a thin page, and thin pages are exactly
+    what AdSense review and Google's helpful-content system penalise. New beats
+    therefore stay invisible — no nav entry, no index page, no sitemap entry —
+    until their first article exists.
+    """
+    used = {p["category"] for p in posts}
+    return [c for c in CFG["categories"] if c["slug"] in used]
+
+
 # ────────────────────────────────────────────────────────────── helpers ──
 def slugify(text: str) -> str:
     text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
@@ -278,6 +290,7 @@ def inject_in_article_ads(html_body: str, every: int = 4) -> str:
 
 # ─────────────────────────────────────────────────────────────── layout ──
 LIVE = livedata.fetch(offline=bool(os.environ.get("FOK_OFFLINE")))
+LIVE_CATS: set[str] = set()
 
 def head(title, description, canonical, *, og_image, og_type="article",
          published=None, modified=None, jsonld=None, robots="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"):
@@ -341,7 +354,9 @@ def header_html(active=""):
     def _link(n):
         cur = ' aria-current="page"' if n["url"].strip("/") == active else ""
         return '<a href="%s"%s>%s</a>' % (n["url"], cur, esc(n["label"]))
-    links = "".join(_link(n) for n in CFG["nav"])
+    nav_items = [n for n in CFG["nav"]
+                 if not (n["url"].strip("/") in CATS and n["url"].strip("/") not in LIVE_CATS)]
+    links = "".join(_link(n) for n in nav_items)
     return f"""<body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
@@ -364,7 +379,8 @@ def header_html(active=""):
 
 
 def footer_html():
-    cats = "".join(f'<li><a href="/{c["slug"]}/">{esc(c["name"])}</a></li>' for c in CFG["categories"])
+    cats = "".join(f'<li><a href="/{c["slug"]}/">{esc(c["name"])}</a></li>'
+                   for c in CFG["categories"] if c["slug"] in LIVE_CATS)
     year = dt.date.today().year
     return f"""</main>
 <footer class="site-footer">
@@ -661,7 +677,7 @@ def render_home(posts):
     cat_cards = "".join(
         f"""<a class="cat-card cat-{c['slug']}" href="/{c['slug']}/">
         <h3>{esc(c['name'])}</h3><p>{esc(c['blurb'])}</p><span class="cat-go">Browse →</span></a>"""
-        for c in CFG["categories"])
+        for c in live_categories(posts))
     hero = ""
     if feat:
         hero = f"""<section class="lede">
@@ -784,7 +800,7 @@ def render_404():
 # ─────────────────────────────────────────────────────── machine outputs ──
 def render_feeds(posts, pages):
     urls = [(SITE + "/", "daily", "1.0", dt.date.today())]
-    for c in CFG["categories"]:
+    for c in live_categories(posts):
         urls.append((f"{SITE}/{c['slug']}/", "daily", "0.8", dt.date.today()))
     for p in posts:
         urls.append((p["abs_url"], "monthly", "0.9", p["updated"]))
@@ -844,7 +860,7 @@ Sitemap: {SITE}/sitemap.xml
              "Statistics Korea, KRX, FSS, ministry releases and company filings — and each article "
              "states the date its figures were current. Content is drafted with AI assistance and "
              "reviewed by a human editor; see /editorial-policy/.", ""]
-    for c in CFG["categories"]:
+    for c in live_categories(posts):
         items_c = [p for p in posts if p["category"] == c["slug"]]
         if not items_c:
             continue
@@ -886,6 +902,8 @@ def build():
     os.makedirs(DIST, exist_ok=True)
 
     posts, pages = load_posts(), load_pages()
+    global LIVE_CATS
+    LIVE_CATS = {c["slug"] for c in live_categories(posts)}
     print(f"→ {len(posts)} posts, {len(pages)} pages")
 
     imagegen.logo(os.path.join(DIST, "img", "logo.png"))
@@ -899,7 +917,7 @@ def build():
 
     for p in posts:
         render_post(p, posts)
-    for c in CFG["categories"]:
+    for c in live_categories(posts):
         render_category(c, posts)
     for pg in pages:
         render_page(pg)

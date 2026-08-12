@@ -28,6 +28,7 @@ PALETTES = {
     "living":     [("#06140f", "#0d2c22"), "#0f9d76", "#5fe3b4", "#ffd166"],
     "society":    [("#0d0718", "#1e1236"), "#7c3aed", "#b98cff", "#ff9ecb"],
     "policy":     [("#160d02", "#2e1a06"), "#e07a00", "#ffb340", "#ffe5a3"],
+    "kcontent":   [("#16050f", "#330a22"), "#ff2e88", "#ff86bd", "#ffd166"],
     "_default":   [("#0a0e1a", "#141c2e"), "#c8102e", "#7aa2ff", "#f4c04e"],
 }
 
