@@ -486,7 +486,18 @@ def render_post(p, all_posts):
     # Key takeaways — the block answer engines lift verbatim.
     kt = ""
     if p.get("key_takeaways"):
-        items = "".join(f"<li>{md_inline(k)}</li>" for k in p["key_takeaways"])
+        def takeaway(k):
+            """Render a takeaway with a superscript citation into the sources list."""
+            if not isinstance(k, dict):
+                return f"<li>{md_inline(k)}</li>"          # legacy plain string
+            refs = k.get("source")
+            refs = [] if refs is None else (refs if isinstance(refs, list) else [refs])
+            cites = "".join(
+                f'<sup class="cite"><a href="#source-{r}" '
+                f'aria-label="Source {r}">{r}</a></sup>' for r in refs)
+            return f'<li>{md_inline(k.get("text", ""))}{cites}</li>'
+
+        items = "".join(takeaway(k) for k in p["key_takeaways"])
         kt = f"""<aside class="takeaways" aria-labelledby="key-takeaways">
   <h2 id="key-takeaways">Key takeaways</h2>
   <ul>{items}</ul>
@@ -514,12 +525,24 @@ def render_post(p, all_posts):
 
     src_html = ""
     if p.get("sources"):
-        rows = "".join(
-            f'<li><a href="{esc(s["url"])}" rel="nofollow noopener" target="_blank">{esc(s["title"])}</a>'
-            f'<span class="muted"> — {esc(s.get("publisher", ""))}</span></li>'
-            for s in p["sources"])
+        def source_row(i, s):
+            acc = s.get("accessed")
+            stamp = (f'<span class="muted small"> · verified {esc(str(acc))}</span>'
+                     if acc else "")
+            tag = ('<span class="src-primary" title="Primary source">primary</span>'
+                   if s.get("primary") else "")
+            return (f'<li id="source-{i}"><span class="src-n">{i}</span>'
+                    f'<a href="{esc(s["url"])}" rel="nofollow noopener" target="_blank">'
+                    f'{esc(s["title"])}</a>{tag}'
+                    f'<span class="muted"> — {esc(s.get("publisher", ""))}</span>{stamp}</li>')
+
+        rows = "".join(source_row(i, s) for i, s in enumerate(p["sources"], start=1))
         src_html = f"""<section class="sources" aria-labelledby="src-h">
-  <h2 id="src-h">Sources &amp; further reading</h2><ol class="plain">{rows}</ol></section>"""
+  <h2 id="src-h">Sources &amp; further reading</h2>
+  <p class="muted small">Every figure in the key takeaways is numbered to the source it was
+  read from. Sources marked <span class="src-primary">primary</span> are the statistics
+  office, central bank, exchange, regulator or filing itself.</p>
+  <ol class="plain sourcelist">{rows}</ol></section>"""
 
     related = [q for q in all_posts if q["slug"] != p["slug"] and q["category"] == p["category"]][:3]
     if len(related) < 3:
@@ -865,7 +888,7 @@ def build():
     for p in posts:
         h = os.path.join(DIST, "img", f"{p['slug']}-hero.webp")
         o = os.path.join(DIST, "img", f"{p['slug']}-og.png")
-        imagegen.hero(p["slug"], p["category"], h)
+        imagegen.hero({**p, "category_name": CATS.get(p["category"], {}).get("name", "")}, h)
         imagegen.social_card(p["slug"], p["category"], p["title"],
                              CATS.get(p["category"], {}).get("name", ""), o)
     print(f"→ generated {len(posts)*2+1} images")

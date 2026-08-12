@@ -15,6 +15,7 @@ import hashlib
 import math
 import os
 import random
+import re
 import textwrap
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -179,11 +180,106 @@ def _canvas(slug: str, category: str, size):
     return _grain(img, rnd), pal
 
 
-def hero(slug: str, category: str, out_path: str, size=(1600, 900)):
-    img, _ = _canvas(slug, category, size)
+FIGURE_RE = re.compile(r"\*\*([^*]*\d[^*]*)\*\*")
+
+
+def lead_figure(post: dict) -> str:
+    """The first bolded number the article itself leads with, e.g. '92%' or '₩104.8tn'."""
+    for item in post.get("key_takeaways") or []:
+        text = item.get("text", "") if isinstance(item, dict) else str(item)
+        m = FIGURE_RE.search(text)
+        if m:
+            fig = m.group(1).strip().rstrip(".,;:")
+            if len(fig) <= 26:
+                return fig
+    return ""
+
+
+def editorial_cover(post: dict, out_path: str, size=(1600, 900)):
+    """
+    Typographic cover built from the article's own headline and lead figure.
+
+    Used when a post declares no `chart:` block. Unlike decorative art, this is
+    never unrelated to the piece — every word on it comes from the piece.
+    """
+    slug, category = post["slug"], post.get("category", "_default")
+    img, pal = _canvas(slug, category, size)
+    (_, _), primary, secondary, highlight = pal
+    w, h = size
+
+    scrim = Image.new("RGBA", size, (0, 0, 0, 0))
+    sd = ImageDraw.Draw(scrim, "RGBA")
+    for i in range(h):
+        sd.line([(0, i), (w, i)], fill=(4, 7, 14, int(150 + 85 * (i / h) ** 0.7)))
+    img = Image.alpha_composite(img.convert("RGBA"), scrim).convert("RGB")
+
+    d = ImageDraw.Draw(img, "RGBA")
+    pad = int(w * 0.055)
+
+    kicker = str(post.get("category_name") or category).upper()
+    kf = _font("GeistMono-Regular.ttf", int(w * 0.0165))
+    d.rectangle([pad, pad + 4, pad + 5, pad + int(w * 0.019)], fill=_hex(highlight))
+    d.text((pad + 18, pad), kicker, font=kf, fill=_hex(highlight) + (240,))
+
+    fig = lead_figure(post)
+    y_cursor = h - pad
+    if fig:
+        ff = _font("InstrumentSans-Bold.ttf", int(w * 0.105))
+        fw = d.textlength(fig, font=ff)
+        if fw > w - pad * 2:
+            ff = _font("InstrumentSans-Bold.ttf", int(w * 0.105 * (w - pad * 2) / fw))
+        fh = int(w * 0.105 * 1.05)
+        y_cursor = h - pad - fh
+        d.text((pad + 3, y_cursor + 3), fig, font=ff, fill=(0, 0, 0, 120))
+        d.text((pad, y_cursor), fig, font=ff, fill=_hex(highlight) + (255,))
+        d.line([(pad, y_cursor - int(h * 0.035)), (pad + int(w * 0.07), y_cursor - int(h * 0.035))],
+               fill=_hex(highlight) + (200,), width=4)
+        y_cursor -= int(h * 0.075)
+
+    title = str(post.get("title", ""))
+    box_h = max(int(h * 0.20), y_cursor - pad - int(w * 0.05))
+    f, lines, fs = _fit(d, title, "InstrumentSans-Bold.ttf", w - pad * 2, box_h,
+                        int(w * 0.048), min_size=int(w * 0.022))
+    y = y_cursor - len(lines) * fs * 1.14
+    for line in lines:
+        d.text((pad + 2, y + 2), line, font=f, fill=(0, 0, 0, 130))
+        d.text((pad, y), line, font=f, fill=(255, 255, 255, 250))
+        y += fs * 1.14
+
+    mono = _font("GeistMono-Regular.ttf", int(w * 0.0135))
+    d.text((w - pad - d.textlength("futureofkorea.com", font=mono), pad),
+           "futureofkorea.com", font=mono, fill=(255, 255, 255, 150))
+
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    img.save(out_path, "WEBP", quality=82, method=6)
+    img.save(out_path, "WEBP", quality=86, method=6)
     return out_path
+
+
+def hero(post, category=None, out_path=None, size=(1600, 900)):
+    """
+    Article hero. Renders the post's data as a chart when it declares one,
+    otherwise a typographic cover derived from its headline and lead figure.
+
+    Accepts the modern form hero(post_dict, out_path) and the legacy positional
+    form hero(slug, category, out_path) so older callers keep working.
+    """
+    if isinstance(post, str):                       # legacy: (slug, category, path)
+        post = {"slug": post, "category": category}
+    else:
+        out_path = category if out_path is None and isinstance(category, str) else out_path
+
+    spec = post.get("chart")
+    if spec:
+        import chartgen
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        png = out_path.rsplit(".", 1)[0] + "-chart.png"
+        chartgen.render(spec, post.get("category", "_default"), png, size=size,
+                        headline=post.get("title"))
+        Image.open(png).convert("RGB").save(out_path, "WEBP", quality=88, method=6)
+        os.remove(png)
+        return out_path
+
+    return editorial_cover(post, out_path, size)
 
 
 def _fit(draw, text, font_path, max_w, max_h, start, min_size=34, line_gap=1.16):

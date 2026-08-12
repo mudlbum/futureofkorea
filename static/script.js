@@ -46,4 +46,76 @@
       a.setAttribute("rel", "noopener nofollow");
     }
   });
+
+  // ── Scroll reveal ───────────────────────────────────────────────────────
+  // Adds .reveal to content blocks, then .in when they enter the viewport.
+  // Purely transform/opacity, so it never shifts layout. Anything already on
+  // screen at load is revealed immediately — no blank first paint, and no
+  // dependence on JS for content to be readable (the CSS default is visible
+  // until this script opts an element in).
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      "IntersectionObserver" in window) {
+    var targets = document.querySelectorAll(
+      ".card, .section-card, .prose > h2, .prose > h3, .prose > p, .prose > ul, " +
+      ".prose > ol, .prose > table, .prose > blockquote, .prose > figure, " +
+      ".callout, .faq details, .sources, .resources, .related");
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+
+    targets.forEach(function (el, i) {
+      var r = el.getBoundingClientRect();
+      if (r.top < innerHeight * 0.95) { el.classList.add("reveal", "in"); return; }
+      el.classList.add("reveal");
+      el.style.transitionDelay = ((i % 4) * 45) + "ms";
+      io.observe(el);
+    });
+  }
+
+  // ── Count-up on the key-takeaway figures ────────────────────────────────
+  // Animates the number inside <strong> once, when the takeaways scroll into
+  // view. Falls back silently to the static text if anything is unparseable,
+  // and never rewrites the digits themselves — only the display during flight.
+  (function () {
+    var box = document.querySelector(".takeaways");
+    if (!box || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+
+    var nums = [].slice.call(box.querySelectorAll("strong")).map(function (el) {
+      var m = /^([^\d\-]*)(-?[\d,]+(?:\.\d+)?)(.*)$/.exec(el.textContent.trim());
+      if (!m) return null;
+      var target = parseFloat(m[2].replace(/,/g, ""));
+      if (!isFinite(target)) return null;
+      var decimals = (m[2].split(".")[1] || "").length;
+      var grouped = m[2].indexOf(",") > -1;
+      return { el: el, pre: m[1], post: m[3], target: target, decimals: decimals,
+               grouped: grouped, original: el.textContent };
+    }).filter(Boolean);
+    if (!nums.length) return;
+
+    function fmt(v, n) {
+      var s = v.toFixed(n.decimals);
+      if (n.grouped) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return n.pre + s + n.post;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      var start = null, dur = 900;
+      requestAnimationFrame(function step(ts) {
+        if (start === null) start = ts;
+        var t = Math.min((ts - start) / dur, 1);
+        var e = 1 - Math.pow(1 - t, 3);
+        nums.forEach(function (n) { n.el.textContent = fmt(n.target * e, n); });
+        if (t < 1) requestAnimationFrame(step);
+        else nums.forEach(function (n) { n.el.textContent = n.original; });
+      });
+    }, { threshold: 0.35 });
+    io.observe(box);
+  })();
+
 })();

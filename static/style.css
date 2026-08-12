@@ -252,3 +252,100 @@ a:hover{text-decoration-thickness:2px}
   .prose{font-size:1.05rem}
 }
 @media print{.site-header,.site-footer,.ad-slot,.related,.toc{display:none}.hero img{max-height:300px}}
+
+/* citations + source list */
+sup.cite{font-size:.62em;line-height:0;margin-left:2px}
+sup.cite a{text-decoration:none;background:var(--bg-3);color:var(--ink-2);
+  padding:2px 5px;border-radius:5px;font-weight:700}
+sup.cite a:hover{background:var(--accent);color:#fff}
+.sourcelist li{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;
+  padding:10px 0;border-bottom:1px solid var(--line)}
+.sourcelist li:target{background:var(--bg-2);outline:2px solid var(--accent);
+  outline-offset:4px;border-radius:6px}
+.src-n{flex:0 0 auto;min-width:22px;height:22px;display:inline-grid;place-items:center;
+  background:var(--bg-3);color:var(--ink-2);border-radius:6px;font-size:.75rem;font-weight:700}
+.src-primary{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;
+  color:var(--living);border:1px solid var(--living);border-radius:999px;padding:1px 7px}
+
+/* ─── motion ──────────────────────────────────────────────────────────────
+   Every animation below is transform/opacity only, so it runs on the GPU
+   compositor and cannot cause layout shift. Nothing animates height, width,
+   top or margin — those are what wreck CLS, and CLS is scored by both Core
+   Web Vitals and AdSense site quality. All of it is disabled wholesale by
+   prefers-reduced-motion at the bottom of this block.               */
+
+@keyframes fok-rise{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:none}}
+@keyframes fok-fade{from{opacity:0}to{opacity:1}}
+@keyframes fok-sweep{from{transform:translate3d(-101%,0,0)}to{transform:none}}
+
+/* entrance: masthead and lede on first paint */
+.masthead h1{animation:fok-rise .55s cubic-bezier(.22,.8,.28,1) both}
+.masthead-dek{animation:fok-rise .55s cubic-bezier(.22,.8,.28,1) .08s both}
+.lede{animation:fok-rise .6s cubic-bezier(.22,.8,.28,1) .04s both}
+
+/* scroll reveal — JS adds .reveal, IntersectionObserver adds .in */
+.reveal{opacity:0;transform:translate3d(0,22px,0);
+  transition:opacity .6s cubic-bezier(.22,.8,.28,1),transform .6s cubic-bezier(.22,.8,.28,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* cards lift toward the pointer */
+.card,.section-card,.related a{transition:transform .28s cubic-bezier(.22,.8,.28,1),
+  box-shadow .28s ease,border-color .28s ease}
+.card:hover,.section-card:hover,.related a:hover{transform:translate3d(0,-4px,0);
+  box-shadow:var(--shadow);border-color:var(--line-2)}
+.card img,.lede-media img{transition:transform .5s cubic-bezier(.22,.8,.28,1)}
+.card:hover img,.lede:hover .lede-media img{transform:scale(1.035)}
+
+/* nav underline that grows from the left */
+.site-nav a{position:relative}
+.site-nav a::after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;
+  background:var(--accent);border-radius:2px;transform:scaleX(0);transform-origin:left;
+  transition:transform .26s cubic-bezier(.22,.8,.28,1)}
+.site-nav a:hover::after,.site-nav a[aria-current]::after{transform:scaleX(1)}
+
+/* takeaways stagger in, each with its own delay */
+.takeaways{animation:fok-fade .5s ease both}
+.takeaways li{animation:fok-rise .5s cubic-bezier(.22,.8,.28,1) both}
+.takeaways li:nth-child(1){animation-delay:.06s}
+.takeaways li:nth-child(2){animation-delay:.12s}
+.takeaways li:nth-child(3){animation-delay:.18s}
+.takeaways li:nth-child(4){animation-delay:.24s}
+.takeaways li:nth-child(5){animation-delay:.30s}
+.takeaways li:nth-child(6){animation-delay:.36s}
+.takeaways::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;
+  background:var(--accent);transform-origin:top;animation:fok-rise .6s ease both}
+.takeaways{position:relative}
+
+/* FAQ disclosure chevron */
+.faq details summary::marker,.faq details summary::-webkit-details-marker{content:""}
+.faq details summary{position:relative;cursor:pointer;transition:color .2s ease}
+.faq details summary::after{content:"";position:absolute;right:4px;top:50%;width:9px;height:9px;
+  border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:translateY(-70%) rotate(45deg);transition:transform .3s cubic-bezier(.22,.8,.28,1)}
+.faq details[open] summary::after{transform:translateY(-30%) rotate(225deg)}
+.faq details[open] .faq-a{animation:fok-rise .35s ease both}
+
+/* citation chips pop on hover */
+sup.cite a{transition:transform .2s cubic-bezier(.34,1.56,.64,1),background .2s ease,color .2s ease}
+sup.cite a:hover{transform:translate3d(0,-2px,0) scale(1.12)}
+
+/* source rows sweep when linked to */
+.sourcelist li:target{animation:fok-fade .45s ease both}
+
+/* buttons / links with a sweeping highlight */
+.related a::before{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 10%,transparent),transparent);
+  opacity:0;transition:opacity .35s ease}
+.related a{position:relative;overflow:hidden}
+.related a:hover::before{opacity:1;animation:fok-sweep .7s ease}
+
+/* the one non-decorative motion: hero images fade in as they decode */
+.article .hero img{animation:fok-fade .7s ease both}
+
+@media (prefers-reduced-motion:reduce){
+  .masthead h1,.masthead-dek,.lede,.takeaways,.takeaways li,.takeaways::before,
+  .faq details[open] .faq-a,.article .hero img,.sourcelist li:target{animation:none!important}
+  .reveal{opacity:1!important;transform:none!important;transition:none!important}
+  .card:hover,.section-card:hover,.related a:hover,.card:hover img{transform:none!important}
+  .site-nav a::after{transition:none}
+}

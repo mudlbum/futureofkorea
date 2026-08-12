@@ -33,11 +33,30 @@ description: "TODO one or two sentence standfirst shown on the page and in cards
 image_alt: "TODO describes the generated artwork for screen readers"
 tags: [todo, five, to, eight, tags]
 about: ["TODO entity names for schema.org"]
+# Every takeaway must state a **bolded figure** and cite the source it came from
+# by its 1-based index in `sources:` below. validate.py fails the build otherwise.
 key_takeaways:
-  - "TODO lead with the number. **Bold the figure.** Name the source period."
-  - "TODO"
-  - "TODO"
-  - "TODO"
+  - text: "TODO lead with the number. **Bold the figure.** Name the source period."
+    source: 1
+  - text: "TODO **figure**"
+    source: 2
+  - text: "TODO **figure**"
+    source: 1
+  - text: "TODO **figure**"
+    source: 3
+# Optional. Present a `chart:` block and the hero image becomes a real chart of
+# these numbers instead of a typographic cover. Omit it entirely if the piece
+# has no series worth plotting — a wrong chart is worse than no chart.
+# chart:
+#   type: line              # line | bar | grouped_bar
+#   title: "TODO what the chart shows, with its period"
+#   y_label: "TODO unit"
+#   y_suffix: ""            # e.g. "%"
+#   source: "TODO who published these numbers"
+#   annotate_last: true
+#   series:
+#     - label: "TODO"
+#       points: [["Jan", 0], ["Feb", 0]]
 # video:            # optional — only with a real, verified YouTube ID
 #   id: XXXXXXXXXXX
 #   title: "Video title as published"
@@ -57,10 +76,24 @@ resources:
   - title: "TODO official portal"
     url: "https://"
     note: "TODO what it is and why you would open it"
+# At least 3 sources, at least 1 marked `primary: true` — the statistics office,
+# central bank, exchange, regulator or filing you read the figure off. News
+# coverage corroborates a primary source; it does not replace one.
+# `accessed` is the date you actually opened it and saw the number.
 sources:
+  - title: "TODO the page or release title as published"
+    url: "https://"
+    publisher: "TODO Bank of Korea / Statistics Korea / KRX / DART / ministry"
+    accessed: {date}
+    primary: true
   - title: "TODO"
     url: "https://"
     publisher: "TODO outlet, month year"
+    accessed: {date}
+  - title: "TODO"
+    url: "https://"
+    publisher: "TODO outlet, month year"
+    accessed: {date}
 ---
 
 TODO opening: the news or the question, in two or three sentences. No throat-clearing.

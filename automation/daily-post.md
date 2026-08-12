@@ -90,3 +90,45 @@ Say so plainly, name what you checked, and stop. Do not pad. Do not rewrite yest
 with new adjectives. Google's scaled-content-abuse policy exists precisely to catch sites that
 publish daily regardless of whether they have anything to say — and a site that trips it loses
 its AdSense account, not just a ranking.
+
+---
+
+## Step 2a — record the evidence as you verify (required)
+
+Verification is no longer just a habit; it is a build gate. As you confirm each
+figure in Step 2, write it straight into front matter:
+
+1. Add the source to `sources:` with `title`, `url`, `publisher`, `accessed:` (today)
+   and `primary: true` where it is the institution itself. Minimum three sources,
+   at least one primary.
+2. Write each takeaway as a mapping, not a string, and point it at the source index
+   the number came from:
+
+   ```yaml
+   key_takeaways:
+     - text: "Chip exports rose **21.4%** year on year in July 2026."
+       source: 1
+   ```
+
+3. Every takeaway needs a **bolded figure**. No number, no takeaway.
+
+Run the checker before you commit:
+
+```bash
+python3 scripts/factcheck.py
+```
+
+It fails on unsourced figures, missing primaries, stale `accessed` dates and dead
+source URLs. `scripts/validate.py` runs it too, so a failure here blocks the deploy.
+
+## Step 3a — decide the artwork
+
+While drafting, decide whether the piece carries a series worth plotting.
+
+* **Yes** → add a `chart:` block (see `CLAUDE.md`). The hero becomes that chart.
+  Only plot numbers you verified in Step 2, and name the publisher in `chart.source`.
+* **No** → add nothing. The hero becomes a typographic cover built from the headline
+  and the lead figure.
+
+Never fabricate a series to get a chart. An invented data point in an image is a
+retraction, and images are exactly where readers stop checking.

@@ -108,3 +108,68 @@ with no surrounding context, and should name its source period.
 
 See `automation/daily-post.md`. In short: research → verify → write → `python3 build.py` →
 `python3 scripts/validate.py` → `git commit && git push` → GitHub Actions deploys.
+
+---
+
+## Sourcing standard (enforced by `scripts/factcheck.py`)
+
+In force for every post dated on or after `factcheck.enforce_from` in
+`site.config.json`. `scripts/validate.py` calls the checker and **fails the build**
+on any violation, so an unsourced figure cannot reach production.
+
+### `sources:` — the evidence list
+
+```yaml
+sources:
+  - title: "Economic Statistics System — policy rate"
+    url: "https://ecos.bok.or.kr/..."
+    publisher: "Bank of Korea"
+    accessed: 2026-08-13      # the day you opened it and read the number
+    primary: true             # it *is* the institution, not a report about one
+```
+
+* at least **3** sources, at least **1** with `primary: true`
+* `primary` means the statistics office, central bank, exchange, regulator or the
+  company filing itself. Reuters reporting a KOSIS number is not primary — KOSIS is.
+* `accessed` may not be in the future, and may not be more than 400 days before the
+  post date. Old access dates mean the figure was never re-verified.
+* every URL is fetched during validation; a dead link fails the build
+
+### `key_takeaways:` — the quotable claims
+
+```yaml
+key_takeaways:
+  - text: "Births rose **7.4%** year on year in Q1 2026."
+    source: [1, 3]            # int or list of ints, indexing `sources` from 1
+```
+
+* every takeaway **must** carry at least one source index
+* every takeaway **must** contain a bolded span with a digit in it. If a claim has
+  no number, it is not a takeaway — put it in the body.
+* takeaways render with a superscript citation linking to the numbered source
+
+Bare-string takeaways are rejected. This is deliberate: the takeaways block is what
+AI answer engines quote verbatim, so it is the one place a wrong number does the
+most damage.
+
+### What this does *not* check
+
+Body prose is not machine-verified. The gate covers the takeaways, the source list
+and link liveness. Everything in Step 2 of `automation/daily-post.md` — opening each
+primary source and confirming each figure — is still your job, and still the part
+that matters most.
+
+## Artwork
+
+Hero images are generated at build time from the post itself. There is nothing to
+source, download or license.
+
+* **Declare a `chart:` block** and the hero becomes a real chart of those numbers,
+  drawn in the site palette with the source named on the image. Use this whenever
+  the piece has a series worth plotting.
+* **Omit it** and the hero becomes a typographic cover: the category, the headline,
+  and the lead bolded figure lifted from the first takeaway.
+
+Both are derived from the article's own content, so they cannot be off-topic. Do not
+invent numbers to justify a chart — if there is no series, the cover is the right
+answer.

@@ -22,6 +22,8 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 DIST = os.environ.get("FOK_DIST") or os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dist")
 
@@ -140,8 +142,71 @@ def main():
             if needle not in h:
                 err(f"{rel}: missing {label}")
 
+    # ── AdSense site-quality gate ────────────────────────────────────────────
+    # These are the things reviewers and the automated policy scan actually look
+    # for. Each one has rejected real sites: duplicate metadata reads as scaled
+    # content, orphan pages read as thin, and missing policy links in the footer
+    # is a straight fail regardless of how good the writing is.
+    titles: dict[str, str] = {}
+    descs: dict[str, str] = {}
+    for f in pages:
+        rel = f.replace(DIST, "") or "/"
+        h = open(f, encoding="utf-8").read()
+
+        m = re.search(r"<title>(.*?)</title>", h, re.S)
+        if m:
+            t = html.unescape(m.group(1)).strip()
+            if t in titles:
+                err(f"{rel}: duplicate <title> — also used by {titles[t]} "
+                    "(duplicate metadata reads as scaled content abuse)")
+            titles[t] = rel
+        m = re.search(r'name="description" content="(.*?)"', h, re.S)
+        if m:
+            d = html.unescape(m.group(1)).strip()
+            if d in descs:
+                err(f"{rel}: duplicate meta description — also used by {descs[d]}")
+            descs[d] = rel
+
+        # every page must reach the policy pages from its own footer
+        for policy in ("privacy-policy", "terms", "disclaimer", "contact"):
+            if f'/{policy}/' not in h:
+                err(f"{rel}: no link to /{policy}/ (AdSense requires it site-wide)")
+
+    for f in articles:
+        rel = f.replace(DIST, "")
+        h = open(f, encoding="utf-8").read()
+        body = h.split('<div class="prose"', 1)[-1]
+        internal = len(set(re.findall(r'href="(/(?!img/|style|favicon|rss|sitemap)[^"]*)"', body)))
+        if internal < 2:
+            err(f"{rel}: {internal} internal link(s) in the body — need at least 2 "
+                "so the page is not an orphan")
+        if not re.search(r'(datetime=|class="byline")', h):
+            err(f"{rel}: no visible byline or publication date")
+
+    cfg_ads = json.load(open(os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "site.config.json"), encoding="utf-8")).get("adsense", {})
+    if cfg_ads.get("enabled"):
+        if not os.path.exists(os.path.join(DIST, "ads.txt")):
+            err("adsense.enabled is true but no ads.txt was emitted")
+        pub = str(cfg_ads.get("publisher_id", ""))
+        if not pub.startswith("ca-pub-") or pub.endswith("0000000000000000"):
+            err(f"adsense.enabled is true but publisher_id is still a placeholder ({pub})")
+
+    # sourcing gate — every published figure traceable to a live primary source
+    try:
+        import factcheck
+        fc_errors, fc_legacy = factcheck.run(offline=bool(os.environ.get("FOK_OFFLINE")))
+        for f in fc_errors:
+            err(f"fact-check — {f}")
+        for f in fc_legacy:
+            warn(f"fact-check (pre-cutoff) — {f}")
+    except Exception as e:                      # noqa: BLE001
+        err(f"fact-check could not run: {type(e).__name__}: {e}")
+
     print(f"checked {len(pages)} pages ({len(articles)} articles)")
-    for w in warnings:
+    if warnings:
+        print(f"  {len(warnings)} warning(s) — first 5:")
+    for w in warnings[:5]:
         print(f"  warn: {w}")
     if errors:
         print(f"\n✗ {len(errors)} error(s):")
