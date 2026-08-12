@@ -149,7 +149,7 @@ Put the three together and you get the outcome: a **10.84% single-day fall**, fo
 
 Where the floor actually sits is genuinely contested. Some accounts put it around the **6,200 level in the first week of August**; others record a close of **5,593.56** as the rebound faded. Both are defensible depending on the session measured, and the honest description is a volatile **5,600–6,200** band rather than a settled bottom. Sell-side range forecasts cluster at **6,000–7,000**, with foreign flows, the semiconductor cycle and CPI treated as the swing factors.
 
-The honest summary is that the sell side's targets currently span roughly **6,000 to 9,000**. A 50% spread in twelve-month targets is not a forecast; it is an admission that nobody knows which regime the market is in.
+The honest summary is that published range forecasts cluster around **6,000–7,000**, but individual twelve-month targets vary far more widely than that. A spread that broad is not a forecast; it is an admission that nobody knows which regime the market is in.
 
 > [!ACTION] What to check before forming a view
 > - **Foreign net flows** on the KRX data portal — the reversal, if it comes, shows up here first.
