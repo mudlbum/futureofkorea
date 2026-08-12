@@ -33,6 +33,7 @@ import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts"))
 import imagegen  # noqa: E402
+import livedata  # noqa: E402
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.environ.get("FOK_DIST") or os.path.join(ROOT, "dist")
@@ -276,6 +277,8 @@ def inject_in_article_ads(html_body: str, every: int = 4) -> str:
 
 
 # ─────────────────────────────────────────────────────────────── layout ──
+LIVE = livedata.fetch(offline=bool(os.environ.get("FOK_OFFLINE")))
+
 def head(title, description, canonical, *, og_image, og_type="article",
          published=None, modified=None, jsonld=None, robots="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"):
     ad = CFG["adsense"]
@@ -692,6 +695,7 @@ def render_home(posts):
     written in English, sourced to the primary data.</p>
   </div>
 </section>
+{livedata.render(LIVE)}
 <div class="wrap">
   {hero}
   {ad_unit('in_article')}

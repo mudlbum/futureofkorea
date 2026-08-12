@@ -1,0 +1,10 @@
+{
+  "fx": {
+    "usd_krw": 1417.0,
+    "krw_usd": 0.000706,
+    "source": "exchangerate-api.com",
+    "as_of": "Tue, 11 Aug 2026 00:02:31 +0000",
+    "fetched": "2026-08-12T00:00:00+00:00",
+    "stale": true
+  }
+}
