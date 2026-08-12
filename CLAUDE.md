@@ -173,3 +173,32 @@ source, download or license.
 Both are derived from the article's own content, so they cannot be off-topic. Do not
 invent numbers to justify a chart — if there is no series, the cover is the right
 answer.
+
+## Commentary posts (responding to another outlet)
+
+For K-content and any story someone else broke. Enforced by `scripts/commentary.py`
+via `validate.py` — the build fails if the balance is wrong.
+
+```yaml
+commentary:
+  source_title:  "Headline as published"
+  source_outlet: "The outlet"
+  source_url:    "https://..."
+  source_date:   2026-08-13
+  quote:         "One short verbatim sentence."   # 40 words maximum
+  quote_context: "what that passage was describing"
+```
+
+Rules the build enforces: one quote only, ≤40 words, no stitched-together
+passages, complete attribution with an absolute URL, ≥1,200 words of your own
+prose, and a headline that does not simply restate theirs.
+
+**What makes this lawful is not the link.** Attribution is a courtesy, not a
+licence. It is lawful because the quotation is minimal, the commentary is
+substantial and original, and the result does not substitute for reading the
+original. Paraphrasing someone's article at length is a derivative work and is
+infringement no matter how prominent the credit — do not do it, and never
+screenshot another outlet's page or reuse their photography.
+
+Report the *facts* freely: facts are not copyrightable. What you may not take is
+their expression — their sentences, structure and framing.

@@ -34,6 +34,7 @@ import yaml
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts"))
 import imagegen  # noqa: E402
 import livedata  # noqa: E402
+import commentary  # noqa: E402
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.environ.get("FOK_DIST") or os.path.join(ROOT, "dist")
@@ -593,6 +594,7 @@ def render_post(p, all_posts):
              breadcrumbs([("Home", "/"), (cat.get("name", p["category"]), f"/{p['category']}/"),
                           (p["title"], p["url"])])]
     article = {
+        **commentary.jsonld(p),
         "@type": "BlogPosting",
         "@id": p["abs_url"] + "#article",
         "isPartOf": {"@id": SITE + "/#website"},
@@ -659,6 +661,7 @@ def render_post(p, all_posts):
     {p.get('photo_credit', '')}
   </figure>
   <div class="wrap wrap-narrow">
+    {commentary.render(p, esc)}
     {kt}
     {toc_html}
     <div class="prose">{body_html}</div>

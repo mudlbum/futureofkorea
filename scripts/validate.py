@@ -192,6 +192,25 @@ def main():
         if not pub.startswith("ca-pub-") or pub.endswith("0000000000000000"):
             err(f"adsense.enabled is true but publisher_id is still a placeholder ({pub})")
 
+    # fair-use gate for commentary posts
+    try:
+        import commentary as _cm
+        import yaml as _yaml
+        import glob as _glob
+        for f in sorted(_glob.glob(os.path.join(os.path.dirname(os.path.dirname(
+                os.path.abspath(__file__))), "content", "posts", "*.md"))):
+            raw = open(f, encoding="utf-8").read()
+            if not raw.startswith("---"):
+                continue
+            _, fm, body = raw.split("---", 2)
+            meta = _yaml.safe_load(fm) or {}
+            if meta.get("draft") or not meta.get("commentary"):
+                continue
+            for problem in _cm.check(meta, _cm.words(body)):
+                err(f"fair-use — {os.path.basename(f)}: {problem}")
+    except Exception as e:                      # noqa: BLE001
+        err(f"fair-use check could not run: {type(e).__name__}: {e}")
+
     # sourcing gate — every published figure traceable to a live primary source
     try:
         import factcheck
