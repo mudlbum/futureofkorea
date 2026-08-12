@@ -1,0 +1,102 @@
+{
+  "site_name": "Future of Korea",
+  "tagline": "Where Korea is heading — and what it means for your money, career, and life.",
+  "domain": "https://futureofkorea.com",
+  "locale": "en_US",
+  "lang": "en",
+  "timezone": "Asia/Seoul",
+  "publisher": {
+    "name": "Future of Korea",
+    "legal_name": "Future of Korea",
+    "email": "editor@futureofkorea.com",
+    "founded": "2026"
+  },
+  "author": {
+    "name": "The Future of Korea Desk",
+    "slug": "editorial-desk",
+    "role": "Editorial & Research Desk",
+    "bio": "Future of Korea's editorial desk covers the Korean economy, technology industry, capital markets, demographics, and life on the peninsula for an English-speaking audience. Every article is researched against primary sources — Bank of Korea, Statistics Korea, KRX, FSS, ministry releases, and company filings — and reviewed by a human editor before publication."
+  },
+  "adsense": {
+    "enabled": false,
+    "publisher_id": "ca-pub-0000000000000000",
+    "auto_ads": true,
+    "slots": {
+      "in_article": "0000000000",
+      "sidebar": "0000000000",
+      "footer": "0000000000"
+    }
+  },
+  "analytics": {
+    "ga4_id": "",
+    "search_console_verification": ""
+  },
+  "categories": [
+    {
+      "slug": "markets",
+      "name": "Markets & Investing",
+      "blurb": "KOSPI, KOSDAQ, ADRs, ETFs, the won, and how foreign investors actually access Korean assets.",
+      "accent": "#c8102e",
+      "meta": "Analysis of the KOSPI, KOSDAQ, Korean ADRs and ETFs, the won, and how foreign investors actually get access to Korean assets. Sourced to KRX and Bank of Korea data."
+    },
+    {
+      "slug": "technology",
+      "name": "Technology & Industry",
+      "blurb": "Semiconductors, batteries, shipbuilding, defence exports, robotics, and Korea's AI build-out.",
+      "accent": "#0b6efd",
+      "meta": "Korea's semiconductor, HBM, battery, shipbuilding, defence and robotics industries — who supplies what, at what scale, and how the AI build-out is reshaping them."
+    },
+    {
+      "slug": "living",
+      "name": "Living & Working in Korea",
+      "blurb": "Visas, taxes, healthcare, housing, and the practical mechanics of building a life in Korea.",
+      "accent": "#0f9d76",
+      "meta": "Practical guides to visas, taxes, National Health Insurance, pensions, housing deposits and banking in Korea — the paperwork nobody explains, checked against official sources."
+    },
+    {
+      "slug": "society",
+      "name": "Demographics & Society",
+      "blurb": "The population question, ageing, immigration policy, housing, and the social contract.",
+      "accent": "#7c3aed",
+      "meta": "Korea's fertility rate, ageing, regional depopulation, immigration policy and housing — the demographic arithmetic sitting underneath every other story about the country."
+    },
+    {
+      "slug": "policy",
+      "name": "Policy & Geopolitics",
+      "blurb": "Trade, regulation, the alliance, North Korea risk, and the rules that shape everything above.",
+      "accent": "#e07a00",
+      "meta": "Korean trade rules, industrial policy, financial regulation, the US alliance and North Korea risk — how policy decisions in Seoul move markets and daily life."
+    }
+  ],
+  "nav": [
+    {
+      "label": "Markets",
+      "url": "/markets/"
+    },
+    {
+      "label": "Technology",
+      "url": "/technology/"
+    },
+    {
+      "label": "Living in Korea",
+      "url": "/living/"
+    },
+    {
+      "label": "Society",
+      "url": "/society/"
+    },
+    {
+      "label": "Policy",
+      "url": "/policy/"
+    },
+    {
+      "label": "About",
+      "url": "/about/"
+    }
+  ],
+  "posts_per_page": 12,
+  "social": {
+    "x": "",
+    "linkedin": ""
+  }
+}
