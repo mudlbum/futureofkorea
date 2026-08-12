@@ -337,15 +337,25 @@ def head(title, description, canonical, *, og_image, og_type="article",
         bits.append('<script type="application/ld+json">'
                     + json.dumps(jsonld, ensure_ascii=False, separators=(",", ":"))
                     + "</script>")
+    # Consent Mode v2 must be established before gtag.js or the AdSense tag load,
+    # so this script is synchronous and deliberately first. Everything Google
+    # loads afterwards inherits the denied-by-default state until the reader
+    # accepts. Order here is a compliance requirement, not a style choice.
+    if ga or ad.get("enabled"):
+        bits.append('<script src="/consent.js"></script>')
+        bits.append('<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>')
     if ad.get("enabled"):
+        bits.append('<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>')
         bits.append(f'<meta name="google-adsense-account" content="{ad["publisher_id"]}">')
         if ad.get("auto_ads"):
             bits.append('<script async crossorigin="anonymous" '
                         f'src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ad["publisher_id"]}"></script>')
     if ga:
         bits.append(f'<script async src="https://www.googletagmanager.com/gtag/js?id={ga}"></script>'
-                    "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}"
-                    f"gtag('js',new Date());gtag('config','{ga}');</script>")
+                    "<script>window.dataLayer=window.dataLayer||[];"
+                    "function gtag(){dataLayer.push(arguments)}"
+                    f"gtag('js',new Date());"
+                    f"gtag('config','{ga}',{{anonymize_ip:true}});</script>")
     bits.append("</head>")
     return "\n".join(bits)
 
@@ -646,6 +656,7 @@ def render_post(p, all_posts):
   <figure class="hero">
     <img src="/img/{p['slug']}-hero.webp" alt="{esc(p.get('image_alt') or p['title'])}"
          width="1600" height="900" fetchpriority="high" decoding="async">
+    {p.get('photo_credit', '')}
   </figure>
   <div class="wrap wrap-narrow">
     {kt}
@@ -799,20 +810,34 @@ def render_404():
 
 # ─────────────────────────────────────────────────────── machine outputs ──
 def render_feeds(posts, pages):
-    urls = [(SITE + "/", "daily", "1.0", dt.date.today())]
+    # (url, changefreq, priority, lastmod, image_url, image_caption)
+    urls = [(SITE + "/", "daily", "1.0", dt.date.today(), None, None)]
     for c in live_categories(posts):
-        urls.append((f"{SITE}/{c['slug']}/", "daily", "0.8", dt.date.today()))
+        urls.append((f"{SITE}/{c['slug']}/", "daily", "0.8", dt.date.today(), None, None))
     for p in posts:
-        urls.append((p["abs_url"], "monthly", "0.9", p["updated"]))
+        # Declaring the hero in the sitemap is what gets it considered for Google
+        # Images, which is a meaningful discovery channel for chart-led articles.
+        urls.append((p["abs_url"], "monthly", "0.9", p["updated"],
+                     f"{SITE}/img/{p['slug']}-hero.webp",
+                     p.get("image_alt") or p["title"]))
     for pg in pages:
-        urls.append((pg["abs_url"], "yearly", "0.4", pg.get("updated") or dt.date.today()))
-    body = "".join(
-        f"<url><loc>{u}</loc><lastmod>{d if isinstance(d,str) else d.isoformat()}</lastmod>"
-        f"<changefreq>{cf}</changefreq><priority>{pr}</priority></url>"
-        for u, cf, pr, d in urls)
+        urls.append((pg["abs_url"], "yearly", "0.4",
+                     pg.get("updated") or dt.date.today(), None, None))
+
+    def entry(u, cf, pr, d, img, cap):
+        block = (f"<url><loc>{u}</loc>"
+                 f"<lastmod>{d if isinstance(d, str) else d.isoformat()}</lastmod>"
+                 f"<changefreq>{cf}</changefreq><priority>{pr}</priority>")
+        if img:
+            block += (f"<image:image><image:loc>{img}</image:loc>"
+                      f"<image:title>{esc(cap)}</image:title></image:image>")
+        return block + "</url>"
+
+    body = "".join(entry(*u) for u in urls)
     write(os.path.join(DIST, "sitemap.xml"),
           '<?xml version="1.0" encoding="UTF-8"?>'
-          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + body + "</urlset>")
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+          'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' + body + "</urlset>")
 
     write(os.path.join(DIST, "robots.txt"), f"""User-agent: *
 Allow: /
@@ -910,7 +935,10 @@ def build():
     for p in posts:
         h = os.path.join(DIST, "img", f"{p['slug']}-hero.webp")
         o = os.path.join(DIST, "img", f"{p['slug']}-og.png")
-        imagegen.hero({**p, "category_name": CATS.get(p["category"], {}).get("name", "")}, h)
+        _pmeta = {**p, "category_name": CATS.get(p["category"], {}).get("name", "")}
+        imagegen.hero(_pmeta, h)
+        if _pmeta.get("_photo_credit"):
+            p["photo_credit"] = _pmeta["_photo_credit"]
         imagegen.social_card(p["slug"], p["category"], p["title"],
                              CATS.get(p["category"], {}).get("name", ""), o)
     print(f"→ generated {len(posts)*2+1} images")

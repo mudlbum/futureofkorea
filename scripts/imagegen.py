@@ -256,6 +256,70 @@ def editorial_cover(post: dict, out_path: str, size=(1600, 900)):
     return out_path
 
 
+def photo_cover(post: dict, photo_path: str, out_path: str, size=(1600, 900)):
+    """
+    Photographic hero: the licensed image, darkened, with the headline over it.
+
+    The gradient scrim is what makes this readable rather than a stock-photo
+    cliché — text sits on near-solid colour at the bottom while the photograph
+    still reads at the top. Contrast is fixed by construction, so a bright or
+    busy photo can never render the headline illegible.
+    """
+    w, h = size
+    category = post.get("category", "_default")
+    pal = PALETTES.get(category, PALETTES["_default"])
+    highlight = pal[3]
+
+    img = Image.open(photo_path).convert("RGB")
+    # cover-fit, centred
+    sr, tr = img.width / img.height, w / h
+    if sr > tr:
+        nh = h; nw = int(h * sr)
+    else:
+        nw = w; nh = int(w / sr)
+    img = img.resize((nw, nh), Image.LANCZOS).crop(
+        ((nw - w) // 2, (nh - h) // 2, (nw - w) // 2 + w, (nh - h) // 2 + h))
+
+    scrim = Image.new("RGBA", size, (0, 0, 0, 0))
+    sd = ImageDraw.Draw(scrim, "RGBA")
+    for i in range(h):
+        t = i / h
+        sd.line([(0, i), (w, i)], fill=(6, 9, 18, int(40 + 215 * (t ** 1.6))))
+    img = Image.alpha_composite(img.convert("RGBA"), scrim).convert("RGB")
+
+    d = ImageDraw.Draw(img, "RGBA")
+    pad = int(w * 0.055)
+
+    kicker = str(post.get("category_name") or category).upper()
+    kf = _font("GeistMono-Regular.ttf", int(w * 0.0165))
+    d.rectangle([pad, pad + 4, pad + 5, pad + int(w * 0.019)], fill=_hex(highlight))
+    d.text((pad + 18, pad), kicker, font=kf, fill=(255, 255, 255, 240))
+
+    fig = lead_figure(post)
+    y_bottom = h - pad
+    if fig:
+        ff = _font("InstrumentSans-Bold.ttf", int(w * 0.055))
+        d.text((pad, y_bottom - int(w * 0.058)), fig, font=ff, fill=_hex(highlight) + (255,))
+        y_bottom -= int(w * 0.078)
+
+    title = str(post.get("title", ""))
+    f, lines, fs = _fit(d, title, "InstrumentSans-Bold.ttf", w - pad * 2,
+                        int(h * 0.42), int(w * 0.046), min_size=int(w * 0.022))
+    y = y_bottom - len(lines) * fs * 1.14
+    for line in lines:
+        d.text((pad + 2, y + 2), line, font=f, fill=(0, 0, 0, 150))
+        d.text((pad, y), line, font=f, fill=(255, 255, 255, 252))
+        y += fs * 1.14
+
+    mono = _font("GeistMono-Regular.ttf", int(w * 0.0135))
+    d.text((w - pad - d.textlength("futureofkorea.com", font=mono), pad),
+           "futureofkorea.com", font=mono, fill=(255, 255, 255, 165))
+
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    img.save(out_path, "WEBP", quality=84, method=6)
+    return out_path
+
+
 def hero(post, category=None, out_path=None, size=(1600, 900)):
     """
     Article hero. Renders the post's data as a chart when it declares one,
@@ -269,6 +333,9 @@ def hero(post, category=None, out_path=None, size=(1600, 900)):
     else:
         out_path = category if out_path is None and isinstance(category, str) else out_path
 
+    # Priority: the article's own data > a licensed photograph > typography.
+    # Each step degrades silently to the next, so a missing API key or a failed
+    # fetch costs visual richness but never breaks a build.
     spec = post.get("chart")
     if spec:
         import chartgen
@@ -279,6 +346,15 @@ def hero(post, category=None, out_path=None, size=(1600, 900)):
         Image.open(png).convert("RGB").save(out_path, "WEBP", quality=88, method=6)
         os.remove(png)
         return out_path
+
+    try:
+        import photos
+        rec = photos.fetch(post, offline=bool(os.environ.get("FOK_OFFLINE")))
+        if rec and os.path.exists(rec["path"]):
+            post["_photo_credit"] = photos.credit_html(rec)
+            return photo_cover(post, rec["path"], out_path, size)
+    except Exception as e:                                  # noqa: BLE001
+        print(f"  photos: unavailable ({type(e).__name__}) — using typographic cover")
 
     return editorial_cover(post, out_path, size)
 

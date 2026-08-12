@@ -69,3 +69,46 @@ Search takes months, not days. A new domain typically sees very little organic t
 first three to six months regardless of content quality, then compounds. The evergreen
 explainers — visa rules, how-to guides, tax mechanics — are what will still be earning in two
 years; the news posts are what gets the site crawled frequently in the meantime.
+
+---
+
+## Analytics, consent and ads — switching them on
+
+All three are wired and dormant. Each is a one-line config change.
+
+### 1. GA4
+
+1. Create a GA4 property at [analytics.google.com](https://analytics.google.com), add a
+   **Web** data stream for `https://futureofkorea.com`
+2. Copy the **Measurement ID** (looks like `G-XXXXXXXXXX`)
+3. Put it in `site.config.json` → `analytics.ga4_id`
+4. Rebuild and push
+
+The moment that ID is set, three things happen automatically: `consent.js` loads
+**before** gtag, Consent Mode v2 defaults are pushed as *denied*, and the cookie
+banner appears. Analytics only receives data after a reader clicks "Accept all".
+Order matters — the consent defaults must land before any Google tag, or the first
+pageview escapes before consent is known. That is the mistake that gets sites
+flagged under the EU user consent policy.
+
+### 2. Search Console
+
+Either verify by DNS TXT (most robust), or paste the HTML-tag token into
+`analytics.search_console_verification` and rebuild.
+
+### 3. AdSense — only after approval
+
+Set `adsense.enabled: true` and the real `publisher_id` in `site.config.json`.
+`validate.py` will fail the build if `enabled` is true while the publisher ID is
+still a placeholder, so you cannot half-enable it by accident. The same consent
+banner then governs ad personalisation.
+
+Leave `auto_ads` conservative at first. Ad density is scored by Core Web Vitals,
+and aggressive placement costs you more in rankings than it earns in clicks.
+
+### 4. Languages — deliberately not built yet
+
+`hreflang` plumbing is ready but emits nothing while the site is single-language.
+Translations are deferred on purpose: machine-translated duplicates of a small post
+archive are the textbook scaled-content-abuse pattern and a common AdSense rejection
+reason. Revisit after approval and 30+ posts.

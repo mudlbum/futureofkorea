@@ -378,3 +378,34 @@ sup.cite a:hover{transform:translate3d(0,-2px,0) scale(1.12)}
   .now-cell{border-right:0;border-bottom:1px solid var(--line);min-height:0;padding:10px 0}
   .now-cell:nth-of-type(3){border-top:0}
 }
+
+/* photo credit under a photographic hero — required by the Pexels licence */
+.photo-credit{margin:8px 0 0;text-align:right}
+.photo-credit a{color:var(--ink-2)}
+
+/* ─── consent banner ──────────────────────────────────────────────────────
+   Fixed to the viewport bottom and translated in, so it never displaces
+   content and cannot contribute to CLS.                                */
+.consent{position:fixed;left:0;right:0;bottom:0;z-index:80;
+  background:color-mix(in srgb,var(--bg) 96%,transparent);
+  border-top:1px solid var(--line-2);box-shadow:0 -8px 32px -16px rgba(0,0,0,.5);
+  backdrop-filter:saturate(180%) blur(10px);
+  transform:translate3d(0,110%,0);transition:transform .34s cubic-bezier(.22,.8,.28,1)}
+.consent[data-in]{transform:none}
+.consent[data-closing]{transform:translate3d(0,110%,0)}
+.consent-inner{max-width:var(--maxw);margin-inline:auto;padding:14px 20px;
+  display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.consent-copy{margin:0;flex:1 1 380px;font-size:.9rem;color:var(--ink-2)}
+.consent-actions{display:flex;gap:10px;flex:0 0 auto}
+.btn{font:inherit;font-size:.9rem;font-weight:650;padding:9px 18px;border-radius:999px;
+  border:1px solid var(--line-2);cursor:pointer;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),background .2s ease,color .2s ease}
+.btn:hover{transform:translate3d(0,-2px,0)}
+.btn-ghost{background:transparent;color:var(--ink-2)}
+.btn-ghost:hover{color:var(--ink);background:var(--bg-2)}
+.btn-primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-reduced-motion:reduce){
+  .consent{transition:none}.btn:hover{transform:none}
+}
+@media (max-width:560px){.consent-actions{width:100%}.btn{flex:1}}
