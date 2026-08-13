@@ -31,7 +31,7 @@ We publish figures with the date they were current, link to the underlying sourc
 
 ## Authorship and AI
 
-Articles are produced by the Future of Korea editorial desk using AI-assisted research and drafting tools, then fact-checked against primary sources and reviewed by a human editor before publication. We are explicit about this because you deserve to know how what you're reading was made. The full policy — including what AI is and is not allowed to do here — is on our [editorial &amp; AI policy](/editorial-policy/) page.
+Articles are produced by the Future of Korea editorial desk — an AI-assisted publishing system — and published automatically once they clear our verification gate: every figure cited to a named source, every source dated and reachable, at least one of them primary. No person approves each article before it goes live; a human reviews after publication and corrections are issued promptly. We are explicit about this because you deserve to know how what you're reading was made, and because a vaguer claim would be worse than none. The full policy — including what AI is and is not allowed to do here — is on our [editorial &amp; AI policy](/editorial-policy/) page.
 
 ## How we're funded
 

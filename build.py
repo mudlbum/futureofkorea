@@ -671,10 +671,13 @@ def render_post(p, all_posts):
     {src_html}
     <aside class="disclosure">
       <h2>How this article was produced</h2>
-      <p>Researched and drafted by the Future of Korea editorial desk with AI-assisted
-      research tooling, then fact-checked against the primary sources listed above and
-      reviewed by a human editor before publication. Figures are stated with the date
-      they were current. See our <a href="/editorial-policy/">editorial &amp; AI policy</a>
+      <p>Researched, drafted and fact-checked by the Future of Korea editorial desk — an
+      AI-assisted publishing system — against the primary sources listed above. Every
+      figure in the key takeaways is tied to a numbered source, and the article could not
+      publish until an automated verification gate confirmed each source was named,
+      dated and reachable. Publication is automated; a human reviews after the fact and
+      corrections are issued promptly. Figures are stated with the date they were current.
+      See our <a href="/editorial-policy/">editorial &amp; AI policy</a>
       and <a href="/corrections/">corrections policy</a>.</p>
     </aside>
     {ad_unit('footer')}
@@ -887,7 +890,8 @@ Sitemap: {SITE}/sitemap.xml
              "Published from Seoul (KST). Figures are cited to primary sources — Bank of Korea, "
              "Statistics Korea, KRX, FSS, ministry releases and company filings — and each article "
              "states the date its figures were current. Content is drafted with AI assistance and "
-             "reviewed by a human editor; see /editorial-policy/.", ""]
+             "published automatically once every figure passes an automated source-verification "
+             "gate; reviewed by a human after publication. See /editorial-policy/.", ""]
     for c in live_categories(posts):
         items_c = [p for p in posts if p["category"] == c["slug"]]
         if not items_c:
