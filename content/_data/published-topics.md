@@ -3,6 +3,8 @@
 Read this before choosing today's story. Do not re-cover any of these;
 either write something new or update the existing article in place.
 
+- **2026-08-13** — K-pop's first trillion-won quarter: what the touring economy actually earns  
+  `kpop-agency-earnings-q2-2026` · concert economics, hybe, jyp entertainment, k-content, k-pop, korea exchange
 - **2026-08-12** — Korea's 2026 market crash, explained: what broke, what it cost, and where the KOSPI stands now  
   `kospi-crash-2026-explained` · korean stocks, kospi, leveraged etf, margin debt, market crash, samsung electronics
 - **2026-08-11** — How to buy Korean stocks from abroad in 2026: ADRs, ETFs and direct access, compared  
