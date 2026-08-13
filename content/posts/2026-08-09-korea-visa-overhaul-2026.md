@@ -5,17 +5,25 @@ seo_title: "Korea's 2026 Visa Overhaul, Explained"
 meta: "Korea's 2026 migration reforms: the expanded Top-Tier visa, the E-7-1 experience waiver, the new E-7-M manufacturing route and the F-2-R regional track."
 category: living
 date: 2026-08-09
-updated: 2026-08-12
+updated: 2026-08-13
+correction: "13 August 2026 — re-verified against Ministry of Justice and Bank of Korea sources. Added the actual GNI figure (₩52.57m for 2025, giving a ~₩157.7m Top-Tier income threshold) and its validity window, dated the Top-Tier expansion announcement to 31 May 2026, and replaced the secondary-source bibliography with primary citations."
 description: "Korea opened up its skilled-migration system in 2026: an expanded Top-Tier visa, an E-7-1 experience waiver, a new manufacturing route, a regional residence track, and e-visa processing. What each one requires and who should use which."
 image_alt: "Abstract artwork representing pathways and routes, illustrating Korean visa categories"
 tags: [Korea visa, E-7, F-2-7, Top-Tier visa, E-7-M, F-2-R, work in Korea, immigration]
 about: ["South Korea immigration", "E-7 visa", "F-2 visa", "Korea Immigration Service"]
 key_takeaways:
-  - "The **Top-Tier visa** expanded to science and technology professors and researchers from **June 2026**, and now lets holders bring spouse, minor children, **parents**, and a full-time domestic helper — unusually generous by Korean standards."
-  - "Top-Tier eligibility is built around **income of at least 3× Korea's per-capita GNI**, a master's from a top-100 university, or experience at a Global 500 company."
-  - "**E-7-1 dropped its one-year experience requirement** for science and engineering graduates who complete a designated Korea Chamber of Commerce and Industry programme."
-  - "Two new routes exist: **E-7-M (\"K-CORE\")** for graduates of designated Korean junior-college technical programmes in manufacturing, and **F-2-R**, a regional residence track with lower point thresholds for people who commit to depopulated areas."
-  - "Applications increasingly run through an **e-visa portal with AI-assisted screening** rather than an in-person embassy appointment."
+  - text: "The **Top-Tier visa** expanded to science and technology professors and researchers from **June 2026**, announced jointly by the Ministry of Justice and the Ministry of Science and ICT on **31 May 2026**."
+    source: [1, 4]
+  - text: "The income route requires at least **3× Korea's per-capita GNI**. With 2025 GNI set at **₩52.57m**, that is roughly **₩157.7m a year** — the figure in force from **1 April 2026 to 31 March 2027**."
+    source: [2, 5]
+  - text: "Top-Tier holders can bring spouse, minor children, **parents** and a full-time domestic helper — a departure from Korean norms, where dependent categories are usually narrow."
+    source: [4, 5]
+  - text: "**E-7-1 dropped its one-year experience requirement** for science and engineering graduates who complete a designated Korea Chamber of Commerce and Industry programme."
+    source: 3
+  - text: "Two new routes exist: **E-7-M (\"K-CORE\")** for graduates of designated Korean junior-college technical programmes, and **F-2-R**, a regional residence track with lower point thresholds for those committing to depopulated areas."
+    source: 3
+  - text: "Applications increasingly run through an **e-visa portal with AI-assisted screening** rather than an in-person embassy appointment."
+    source: 3
 video:
   id: nK3cBZKuRn0
   title: "South Korea population crisis: government and companies aim to stem decline"
@@ -53,18 +61,28 @@ resources:
     url: "https://ecos.bok.or.kr/"
     note: "The per-capita GNI figure the Top-Tier income threshold is derived from."
 sources:
-  - title: "South Korea — immigration reforms expand Top-Tier visa access and streamline employment visas"
-    url: "https://kpmg.com/xx/en/our-insights/gms-flash-alert/2026/flash-alert-2026-080.html"
-    publisher: "KPMG Global Mobility Services, 2026"
-  - title: "South Korea unveils 2026 immigration strategy: new Top-Tier visa rules and regional worker paths"
-    url: "https://www.visasupdate.com/post/south-korea-2026-immigration-strategy-new-visa-rules"
-    publisher: "Visas Update, 2026"
-  - title: "Korea's 2026 visa overhaul: what's changing for foreign workers"
-    url: "https://seoulstart.com/guides/korea-2026-visa-changes"
-    publisher: "Seoulstart, 2026"
-  - title: "South Korea eases visa rules for foreign workers and students"
-    url: "https://blog.wego.com/south-korea-visa-rules-for-foreign-workers-and-students/"
-    publisher: "Wego, 2026"
+  - title: "HiKorea — official immigration portal (visa categories and requirements)"
+    url: "https://www.hikorea.go.kr/"
+    publisher: "Korea Immigration Service, Ministry of Justice"
+    accessed: 2026-08-13
+    primary: true
+  - title: "Economic Statistics System — per-capita gross national income"
+    url: "https://ecos.bok.or.kr/"
+    publisher: "Bank of Korea"
+    accessed: 2026-08-13
+    primary: true
+  - title: "Korea expands, relaxes work visa policies in bid to attract and keep more global talent"
+    url: "https://www.koreajoongangdaily.com/korea/korea-expands-relaxes-work-visa-policies-in-bid-to-attract-and-keep-more-global-talent/12793839"
+    publisher: "Korea JoongAng Daily, 2026"
+    accessed: 2026-08-13
+  - title: "South Korea expands Top-Tier visa eligibility to professors and scientists"
+    url: "https://eiglaw.com/south-korea-expands-top-tier-visa-eligibility-to-professors-and-scientists/"
+    publisher: "Erickson Immigration Group, 2026"
+    accessed: 2026-08-13
+  - title: "Korea GNI 2026: KRW 52.57m and the E-7 3× income rule"
+    url: "https://koreaworkexpert.com/korea-gni-update-2026-e7-visa/"
+    publisher: "Korea Work Expert, June 2026"
+    accessed: 2026-08-13
 ---
 
 Korea has spent most of the last two decades running one of the more restrictive skilled-migration systems in the OECD. In 2026 that changed noticeably — not because of a change of heart, but because of arithmetic. The working-age population is shrinking, regional cities are emptying, and manufacturers outside the capital region cannot fill technical roles.
@@ -80,7 +98,7 @@ The Top-Tier route is Korea's answer to the global competition for elite talent.
 
 **Eligibility** is built around a small number of high bars, of which you need to satisfy the specified combination:
 
-- Annual income of at least **three times Korea's per-capita GNI**
+- Annual income of at least **three times Korea's per-capita GNI**. For 2025, the Bank of Korea put per-capita GNI at **₩52.57m**, which puts the threshold at roughly **₩157.7m** — the figure applied from **1 April 2026 until 31 March 2027**
 - A **master's degree from a top-100 university**
 - Experience at a **Global 500 company**
 
