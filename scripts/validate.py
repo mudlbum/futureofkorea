@@ -192,6 +192,17 @@ def main():
         if not pub.startswith("ca-pub-") or pub.endswith("0000000000000000"):
             err(f"adsense.enabled is true but publisher_id is still a placeholder ({pub})")
 
+    # duplicate-topic gate — a daily loop drifts into repeating itself
+    try:
+        import dedupe as _dd
+        dd_errors, dd_warnings = _dd.check()
+        for e in dd_errors:
+            err(f"duplicate topic — {e}")
+        for w in dd_warnings:
+            warn(f"duplicate topic — {w}")
+    except Exception as e:                      # noqa: BLE001
+        err(f"duplicate check could not run: {type(e).__name__}: {e}")
+
     # fair-use gate for commentary posts
     try:
         import commentary as _cm

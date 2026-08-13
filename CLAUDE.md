@@ -202,3 +202,28 @@ screenshot another outlet's page or reuse their photography.
 
 Report the *facts* freely: facts are not copyrightable. What you may not take is
 their expression — their sentences, structure and framing.
+
+## No duplicate topics (enforced by `scripts/dedupe.py`)
+
+`validate.py` compares every pair of published posts on three signals — headline
+word overlap, tag/entity overlap, and word-5-gram overlap of the body — and fails
+the build when a pair looks like the same article. The body signal is the one that
+catches a rewrite: reworded prose still shares long runs of phrasing.
+
+**Before choosing today's story, read `content/_data/published-topics.md`.** It is
+regenerated on every build and lists every published title, slug, date and tag set.
+
+If a topic genuinely needs revisiting, do one of these — do not write a near-copy:
+
+* **Update the existing article in place** and bump `updated:`. This is almost
+  always the right answer, and it is better for SEO than a second page competing
+  with the first.
+* **Set `supersedes: <old-slug>`** in the new post if it deliberately replaces the
+  old one. That exempts the pair from the check.
+* **Write a genuinely different angle.** "The crash" and "what the crash did to
+  pension funds" are different articles; "the crash" and "the selloff explained"
+  are the same article twice.
+
+Two pages on one topic is the most damaging pattern available to a young site:
+Google reads it as scaled content, and the two pages cannibalise each other's
+rankings so neither wins.

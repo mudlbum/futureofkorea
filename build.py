@@ -961,6 +961,12 @@ def build():
 
     for f in os.listdir(os.path.join(ROOT, "static")):
         shutil.copy(os.path.join(ROOT, "static", f), os.path.join(DIST, f))
+    try:
+        import dedupe
+        write(os.path.join(ROOT, "content", "_data", "published-topics.md"),
+              dedupe.topic_index())
+    except Exception as e:                      # noqa: BLE001
+        print(f"  topic index skipped ({type(e).__name__})")
     write(os.path.join(DIST, "CNAME"), SITE.split("//")[1] + "\n")
     write(os.path.join(DIST, ".nojekyll"), "")
     print(f"✓ built → {DIST}")

@@ -1,0 +1,17 @@
+# Topics already published
+
+Read this before choosing today's story. Do not re-cover any of these;
+either write something new or update the existing article in place.
+
+- **2026-08-12** — Korea's 2026 market crash, explained: what broke, what it cost, and where the KOSPI stands now  
+  `kospi-crash-2026-explained` · korean stocks, kospi, leveraged etf, margin debt, market crash, samsung electronics
+- **2026-08-11** — How to buy Korean stocks from abroad in 2026: ADRs, ETFs and direct access, compared  
+  `how-to-buy-korean-stocks-from-abroad` · adr, american depositary receipt, etf, ewy, exchange-traded fund, foreign investor
+- **2026-08-10** — The HBM4 handover: who actually supplies the AI memory in 2026  
+  `hbm4-2026-sk-hynix-samsung-micron` · dram, hbm, hbm4, high bandwidth memory, micron, micron technology
+- **2026-08-09** — Korea's 2026 visa overhaul: Top-Tier, E-7-M and F-2-R explained  
+  `korea-visa-changes-2026` · e-7, e-7 visa, e-7-m, f-2 visa, f-2-7, f-2-r
+- **2026-08-08** — Korea's birth rate is rising: what the 2026 numbers actually show  
+  `korea-birth-rate-2026-rebound` · demographics, demographics of south korea, fertility rate, korea birth rate, marriage, population
+- **2026-08-07** — Why the won stays weak while exports boom — and what September's FX reform changes  
+  `korea-won-weakness-fx-reform-2026` · balance of payments, bank of korea, capital flows, exchange rate, foreign exchange market, fx reform
