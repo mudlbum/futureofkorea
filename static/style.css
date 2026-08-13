@@ -356,31 +356,32 @@ sup.cite a:hover{transform:translate3d(0,-2px,0) scale(1.12)}
    cannot contribute to CLS.                                             */
 .korea-now{border-bottom:1px solid var(--line);
   background:linear-gradient(180deg,var(--bg-2),var(--bg));
-  padding-block:18px 14px}
+  padding-block:26px 20px}
 .now-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .now-cell{position:relative;display:grid;
   grid-template-areas:"icon label" "icon value" "icon sub";
-  grid-template-columns:auto 1fr;column-gap:16px;align-content:center;
-  min-height:96px;padding:16px 20px;border:1px solid var(--line);
+  grid-template-columns:auto minmax(0,1fr);column-gap:18px;align-content:center;
+  justify-items:start;
+  min-height:104px;padding:20px 24px 20px 26px;border:1px solid var(--line);
   border-radius:var(--radius);background:var(--bg);
   transition:transform .28s cubic-bezier(.22,.8,.28,1),
              border-color .28s ease,box-shadow .28s ease}
 .now-cell:hover{transform:translate3d(0,-3px,0);border-color:var(--line-2);
   box-shadow:var(--shadow)}
-.now-cell::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;
+.now-cell::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:4px;
   border-radius:0 3px 3px 0;background:var(--accent)}
 .now-wx::before{background:var(--technology)}
 .now-icon{grid-area:icon;align-self:center;display:grid;place-items:center;
   width:48px;height:48px;border-radius:12px;font-size:1.5rem;line-height:1;
   background:var(--bg-2);border:1px solid var(--line);color:var(--accent)}
 .now-wx .now-icon{color:var(--technology)}
-.now-k{grid-area:label;font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;
+.now-k{grid-area:label;align-self:end;margin-bottom:4px;font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;
   color:var(--ink-3);font-weight:700}
 .now-v{grid-area:value;font-size:1.75rem;font-weight:800;letter-spacing:-.025em;
   line-height:1.15;font-variant-numeric:tabular-nums;color:var(--ink)}
 .now-unit{font-size:.95rem;font-weight:600;color:var(--ink-3);letter-spacing:0;
   margin-left:3px}
-.now-s{grid-area:sub;font-size:.8rem;color:var(--ink-2);
+.now-s{grid-area:sub;align-self:start;font-size:.8rem;color:var(--ink-2);
   font-variant-numeric:tabular-nums;margin-top:2px}
 .now-cell[data-stale="1"] .now-v{color:var(--ink-2)}
 .now-cell[data-stale="1"] .now-k::after{content:" · last known";letter-spacing:.04em;
@@ -388,7 +389,7 @@ sup.cite a:hover{transform:translate3d(0,-2px,0) scale(1.12)}
 .now-foot{margin:12px 0 0;text-align:right}
 @media (max-width:640px){
   .now-grid{grid-template-columns:1fr}
-  .now-cell{min-height:0;padding:14px 16px}
+  .now-cell{min-height:0;padding:16px 18px 16px 20px}
   .now-icon{width:40px;height:40px;font-size:1.25rem}
   .now-v{font-size:1.5rem}
   .now-foot{text-align:left}
@@ -478,34 +479,6 @@ sup.cite a:hover{transform:translate3d(0,-2px,0) scale(1.12)}
   .site-nav a::after{transition:none}
 }
 
-/* ─── Korea now strip ─────────────────────────────────────────────────────
-   Build-time values, so there is no client fetch and no layout shift. Fixed
-   min-height on the cells means the row occupies the same space whether or
-   not every value resolved.                                            */
-.korea-now{border-bottom:1px solid var(--line);background:var(--bg-2)}
-.now-grid{display:grid;gap:0;grid-template-columns:repeat(3,minmax(0,1fr));
-  align-items:stretch;padding-block:0}
-.now-cell{display:flex;flex-direction:column;justify-content:center;gap:2px;
-  min-height:84px;padding:14px 20px 14px 0;border-right:1px solid var(--line)}
-.now-cell:last-of-type{border-right:0}
-.now-k{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;
-  color:var(--ink-3);font-weight:700}
-.now-v{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;
-  font-variant-numeric:tabular-nums}
-.now-s{font-size:.8rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.now-cell[data-stale="1"] .now-v{color:var(--ink-2)}
-.now-cell[data-stale="1"] .now-v::after{content:"·";margin-left:6px;color:var(--ink-3)}
-.now-foot{grid-column:1/-1;margin:0;padding:8px 0 12px;border-top:1px solid var(--line)}
-@media (max-width:820px){
-  .now-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .now-cell:nth-of-type(2){border-right:0}
-  .now-cell:nth-of-type(3){grid-column:1/-1;border-top:1px solid var(--line);border-right:0}
-}
-@media (max-width:460px){
-  .now-grid{grid-template-columns:1fr}
-  .now-cell{border-right:0;border-bottom:1px solid var(--line);min-height:0;padding:10px 0}
-  .now-cell:nth-of-type(3){border-top:0}
-}
 
 /* photo credit under a photographic hero — required by the Pexels licence */
 .photo-credit{margin:8px 0 0;text-align:right}
