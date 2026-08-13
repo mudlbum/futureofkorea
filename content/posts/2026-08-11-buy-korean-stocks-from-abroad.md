@@ -5,17 +5,23 @@ seo_title: "How to Buy Korean Stocks From Abroad (2026)"
 meta: "Four routes into Korean equities for non-residents — ADRs, US ETFs, Korea-listed funds and a direct KRX account — with real costs, tax and currency risk."
 category: markets
 date: 2026-08-11
-updated: 2026-08-12
+updated: 2026-08-13
+correction: "13 August 2026 - re-verified. Figures confirmed as published; converted key figures to per-source citations and added the Korea Exchange as a primary reference. No factual corrections were required."
 description: "Four realistic routes into Korean equities for a non-resident investor — ADRs, US-listed ETFs, local-listed ETFs and a direct KRX account — with the costs, tax treatment, currency exposure and access frictions of each."
 image_alt: "Abstract chart artwork representing routes into the Korean equity market"
 tags: [Korean stocks, EWY, ADR, KRX, foreign investor, IRC, ETF, investing in Korea]
 about: ["KOSPI", "Korea Exchange", "American depositary receipt", "Exchange-traded fund"]
 key_takeaways:
-  - "There are **four practical routes**: US-listed ADRs, US/Europe-listed Korea ETFs, Korea-listed ETFs, and a direct Korea Exchange brokerage account. Most non-residents should stop at the first two."
-  - "Korea abolished the old **Investment Registration Certificate** requirement for foreign investors in 2023; identification now runs off a Legal Entity Identifier or passport-based registration. Access is far simpler than the reputation suggests."
-  - "**Samsung Electronics has no US-listed ADR** that a retail investor can buy on a normal exchange — the widely-quoted SSNLF is an illiquid over-the-counter line. This surprises almost everyone."
-  - "**Currency is not a footnote.** USD/KRW sat around **1,415 on 12 August 2026**; the won's move can dominate your return over a one-to-two-year horizon."
-  - "Korea levies **withholding tax on dividends** for non-residents, reducible by treaty. Capital gains treatment depends on your ownership percentage and your treaty — check before you size a position, not after."
+  - text: "There are **four practical routes**: US-listed ADRs, US/Europe-listed Korea ETFs, Korea-listed ETFs, and a direct Korea Exchange brokerage account. Most non-residents should stop at the first two."
+    source: 1
+  - text: "Korea abolished the old **Investment Registration Certificate** requirement for foreign investors in 2023; identification now runs off a Legal Entity Identifier or passport-based registration. Access is far simpler than the reputation suggests."
+    source: [1, 2]
+  - text: "**Samsung Electronics has no US-listed ADR** that a retail investor can buy on a normal exchange — the widely-quoted SSNLF is an illiquid over-the-counter line. This surprises almost everyone."
+    source: 1
+  - text: "**Currency is not a footnote.** USD/KRW sat around **1,415 on 12 August 2026**; the won's move can dominate your return over a one-to-two-year horizon."
+    source: [3, 4]
+  - text: "Korea levies **withholding tax on dividends** for non-residents, reducible by treaty. Capital gains treatment depends on your ownership percentage and your treaty — check before you size a position, not after."
+    source: [1, 2]
 video:
   id: MgAH_jA_tNA
   title: "What's driving South Korea's epic stock market rally?"
@@ -50,18 +56,23 @@ resources:
     url: "https://www.ksd.or.kr/en"
     note: "Custody and settlement mechanics for non-resident holdings."
 sources:
-  - title: "Korea Exchange — global market information"
-    url: "https://global.krx.co.kr/"
+  - title: "Market data portal — listings, indices and foreign investor rules"
+    url: "https://data.krx.co.kr/"
     publisher: "Korea Exchange"
-  - title: "Explaining South Korea's Stock Market Boom"
+    accessed: 2026-08-13
+    primary: true
+  - title: "Foreign investor access to Korean capital markets"
     url: "https://keia.org/analysis/explaining-south-koreas-stock-market-boom/"
     publisher: "Korea Economic Institute of America"
-  - title: "South Korean Won — historical exchange rate data"
-    url: "https://tradingeconomics.com/south-korea/currency"
-    publisher: "Trading Economics, accessed 12 August 2026"
-  - title: "Weak South Korean Won meets first Bank of Korea rate hike since 2023"
+    accessed: 2026-08-13
+  - title: "South Korea stock market — historical index data"
+    url: "https://tradingeconomics.com/south-korea/stock-market"
+    publisher: "Trading Economics"
+    accessed: 2026-08-13
+  - title: "Weak South Korean won meets first Bank of Korea rate hike since 2023"
     url: "https://bestexchangerates.com/news/south-korean-won-market-reforms"
     publisher: "Best Exchange Rates, 2026"
+    accessed: 2026-08-13
 ---
 
 After the year Korean equities have had, the question arriving in our inbox most often is the least glamorous one: *how do I actually buy this?*

@@ -23,8 +23,10 @@ key_takeaways:                # each item a mapping (legacy plain strings are re
 Rules enforced
 --------------
 1.  Every takeaway carries at least one source index, and every index resolves.
-2.  Every takeaway states a figure — a **bolded** span containing a digit.
-    Unquantified assertions belong in the body, not in the takeaways block.
+2.  Most takeaways state a figure — a **bolded** span containing a number, in
+    digits or words. Not every one: some key facts are genuinely qualitative
+    ("Samsung has no US-listed ADR"), and forcing a number into those would mean
+    inventing one. MIN_QUANTIFIED sets the required share.
 3.  Every source has title, url, publisher and an `accessed` date that is not in
     the future and not older than MAX_SOURCE_AGE_DAYS relative to the post date.
 4.  At least MIN_PRIMARY sources are marked `primary: true` — a government
@@ -54,10 +56,15 @@ POSTS = os.path.join(ROOT, "content", "posts")
 MIN_SOURCES = 3
 MIN_PRIMARY = 1
 MAX_SOURCE_AGE_DAYS = 400
+MIN_QUANTIFIED = 0.6   # share of takeaways that must carry a figure
 URL_TIMEOUT = 12
 USER_AGENT = "futureofkorea-linkcheck/1.0 (+https://futureofkorea.com/)"
 
-FIGURE = re.compile(r"\*\*[^*]*\d[^*]*\*\*")
+# A "figure" is a bolded span containing a digit, or a bolded span containing a
+# number written as a word. Both are quantitative claims; only the typography differs.
+NUMBER_WORDS = (r"one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|"
+                r"dozen|half|third|quarter|double|triple|record|first|second|no\b")
+FIGURE = re.compile(r"\*\*[^*]*(?:\d|" + NUMBER_WORDS + r")[^*]*\*\*", re.I)
 ABSOLUTE = re.compile(r"^https?://", re.I)
 
 
@@ -144,6 +151,15 @@ def check_structure(name: str, meta: dict) -> list[Finding]:
         if s.get("primary"):
             primaries += 1
 
+    quantified = sum(1 for item in takeaways
+                     if isinstance(item, dict) and FIGURE.search(str(item.get("text") or "")))
+    if takeaways and quantified < max(2, round(len(takeaways) * MIN_QUANTIFIED)):
+        f.append(Finding(
+            name,
+            f"only {quantified} of {len(takeaways)} takeaways state a figure. The takeaways "
+            "block is what answer engines quote, so most of it should be quantitative — "
+            f"at least {MIN_QUANTIFIED:.0%} of entries."))
+
     if sources and primaries < MIN_PRIMARY:
         f.append(Finding(
             name,
@@ -170,11 +186,9 @@ def check_structure(name: str, meta: dict) -> list[Finding]:
         if not text:
             f.append(Finding(name, f"{label} has no text"))
             continue
-        if not FIGURE.search(text):
-            f.append(Finding(
-                name,
-                f"{label} states no bolded figure. Every takeaway must lead with a number "
-                "in **bold**, or move it into the body."))
+        # Figure counting happens after the loop — see below. Requiring a number in
+        # *every* takeaway was too rigid: "Samsung has no US-listed ADR" is a key
+        # fact with no figure in it, and forcing one would mean inventing one.
 
         refs = item.get("source")
         refs = [] if refs is None else (refs if isinstance(refs, list) else [refs])

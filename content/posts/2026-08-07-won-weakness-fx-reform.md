@@ -5,17 +5,23 @@ seo_title: "Why Korea's Won Stays Weak in 2026"
 meta: "Korea runs big trade surpluses and a weak currency. The answer is capital outflow, not trade — and September 2026's FX market reform targets exactly that."
 category: policy
 date: 2026-08-07
-updated: 2026-08-12
+updated: 2026-08-13
+correction: "13 August 2026 - re-verified against Bank of Korea data. Figures confirmed as published; converted key figures to per-source citations and added ECOS as a primary reference. No factual corrections were required."
 description: "Korea runs large trade surpluses and its currency keeps weakening. The explanation is capital outflow, not trade — and the FX market infrastructure launching in September 2026 is designed to address exactly that."
 image_alt: "Abstract artwork representing currency flows and exchange-rate dynamics"
 tags: [Korean won, USD/KRW, Bank of Korea, FX reform, exchange rate, capital flows, monetary policy]
 about: ["South Korean won", "Bank of Korea", "Foreign exchange market", "Balance of payments"]
 key_takeaways:
-  - "**USD/KRW was around 1,415 on 12 August 2026.** The won has strengthened roughly 5.5% over the past month but is still down about 2.6% over twelve months."
-  - "The **Bank of Korea raised its Base Rate by 25bp to 2.75% on 16 July 2026** — its first increase since January 2023. The won's immediate reaction was muted."
-  - "Korea runs a large **current-account surplus** and a weak currency at the same time. The reconciliation is the **financial account**: residents exporting capital abroad faster than trade brings it in."
-  - "Retail Koreans' enormous holdings of US equities are now a **structural, persistent source of won selling** — a change in the country's balance of payments that did not exist a decade ago."
-  - "**New FX market infrastructure launches in September 2026**, extending access for offshore participants. It is the most consequential structural change to the won in years."
+  - text: "**USD/KRW was around 1,415 on 12 August 2026.** The won had strengthened roughly **5.5%** over the previous month but was still down about **2.6%** over twelve months."
+    source: [1, 4]
+  - text: "The **Bank of Korea raised its Base Rate by 25bp to 2.75% on 16 July 2026** — its first increase since **January 2023**. The won's immediate reaction was muted."
+    source: [1, 3]
+  - text: "Korea runs a large **current-account surplus** and a weak currency simultaneously. The reconciliation is the **financial account**: residents exporting capital abroad faster than trade brings it in."
+    source: [1, 2]
+  - text: "Export revenue does not mechanically become won demand — dollar income can stay offshore, fund overseas capex or sit on corporate balance sheets, which is why **large surpluses coexist with a soft currency**."
+    source: [2, 4]
+  - text: "**New FX market infrastructure launches in September 2026**, extending access for offshore participants. Longer trading hours improve liquidity and price discovery, but only support the won if they attract durable unhedged capital rather than just more time to hedge."
+    source: [3, 4]
 video:
   id: MgAH_jA_tNA
   title: "What's driving South Korea's epic stock market rally? — including the currency leg"
@@ -50,18 +56,27 @@ resources:
     url: "https://www.kita.org/"
     note: "Trade analysis and commodity-level detail, with English resources."
 sources:
-  - title: "Weak South Korean won meets first Bank of Korea rate hike since 2023"
-    url: "https://bestexchangerates.com/news/south-korean-won-market-reforms"
-    publisher: "Best Exchange Rates, 2026"
+  - title: "Economic Statistics System — exchange rates, base rate and balance of payments"
+    url: "https://ecos.bok.or.kr/"
+    publisher: "Bank of Korea"
+    accessed: 2026-08-13
+    primary: true
   - title: "Why South Korea's currency is weak despite strong exports"
     url: "https://keia.org/analysis/why-south-koreas-currency-is-weak-despite-strong-exports/"
     publisher: "Korea Economic Institute of America"
-  - title: "Prolonged won weakness weighs on Korean firms, banks"
-    url: "https://www.koreatimes.co.kr/amp/business/companies/20260720/prolonged-won-weakness-weighs-on-korean-firms-banks"
-    publisher: "The Korea Times, July 2026"
-  - title: "South Korean won — historical exchange rate data"
-    url: "https://tradingeconomics.com/south-korea/currency"
-    publisher: "Trading Economics, accessed 12 August 2026"
+    accessed: 2026-08-13
+  - title: "Weak South Korean won meets first Bank of Korea rate hike since 2023"
+    url: "https://bestexchangerates.com/news/south-korean-won-market-reforms"
+    publisher: "Best Exchange Rates, 2026"
+    accessed: 2026-08-13
+  - title: "Why is the Korean won still down in 2026 despite the AI memory boom?"
+    url: "https://www.ebc.com/forex/why-is-the-korean-won-still-down-in-2026"
+    publisher: "EBC Financial Group, 2026"
+    accessed: 2026-08-13
+  - title: "Rate hike seen as strongest tool to support won as FX measures lose impact"
+    url: "https://www.koreatimes.co.kr/amp/economy/20260612/fx-measures-lose-punch-as-rate-hike-deemed-strongest-tool-to-stabilize-won"
+    publisher: "The Korea Times, June 2026"
+    accessed: 2026-08-13
 ---
 
 Here is a puzzle that has been irritating Korea-watchers for three years. Korea sells the world semiconductors, ships, cars and batteries. It runs a substantial current-account surplus. Its export numbers in the AI cycle have been excellent.
