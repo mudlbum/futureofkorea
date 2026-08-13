@@ -5,17 +5,23 @@ seo_title: "Korea's Birth Rate in 2026: The Real Data"
 meta: "Korea's fertility rate has risen from 0.72 to about 0.9 in three years, and Q1 2026 births grew at a record pace. What drives it, and what it does not fix."
 category: society
 date: 2026-08-08
-updated: 2026-08-12
+updated: 2026-08-13
+correction: "13 August 2026 - re-verified against Statistics Korea releases. Replaced an unverified April/May monthly series with the confirmed January-March readings, added the Q1 marriage count (62,309, +6.1%) underpinning the central argument, added the age-cohort breakdown, and added KOSIS as a primary citation."
 description: "Korea's fertility rate has climbed from 0.72 to around 0.9 in three years, and Q1 2026 births rose at the fastest quarterly pace since 1981. Here is what is driving it, what it does not fix, and which figures to watch."
 image_alt: "Abstract artwork representing demographic data and population trends"
 tags: [Korea birth rate, fertility rate, demographics, Statistics Korea, population, marriage]
 about: ["Total fertility rate", "Demographics of South Korea", "Statistics Korea"]
 key_takeaways:
-  - "Korea's total fertility rate bottomed at **0.72 in 2023**, rose to **0.75 in 2024** and **0.80 in 2025**, and ran at **0.95 in Q1 2026** — with the annual figure plausibly topping 0.9 for the first time in seven years."
-  - "**Q1 2026 births rose nearly 15% year on year to 75,013** — the largest quarterly increase on record since the series began in 1981."
-  - "Monthly figures are volatile and not a trend: **0.95 in Q1, 0.93 in April, 0.85 in May 2026**. Judge this on annual data."
-  - "The proximate driver is a **marriage rebound**. In Korea, births track marriages closely and with a lag, so a marriage recovery mechanically produces a birth recovery a year or two later."
-  - "The population has still declined for **78 consecutive months**. A fertility rate below 1.0 is roughly half of replacement — a rebound changes the slope, not the direction."
+  - text: "**Q1 2026 births reached 75,013, up 14.8% year on year** — the largest quarterly increase on record in both percentage and absolute terms since the series began in 1981."
+    source: [1, 2]
+  - text: "The **Q1 2026 fertility rate was 0.95**, up 0.12 on the year, after monthly readings of **0.99 in January, 0.93 in February and 0.93 in March** — three consecutive months above 0.9."
+    source: [1, 2]
+  - text: "The proximate driver is marriage: **Q1 2026 marriages reached 62,309, up 6.1%**. Births track marriages closely and with a lag, so a marriage recovery mechanically produces a birth recovery a year or two later."
+    source: [1, 2]
+  - text: "The rise is concentrated among women in their thirties — births per 1,000 women aged **30-34 rose 11.3 to 88.5**, and aged **35-39 rose 9.0 to 62.4**."
+    source: [1, 2]
+  - text: "Fertility bottomed at **0.72 in 2023** and has risen three years running, but the population has still declined for **78 consecutive months**, and 0.9 is well under half the **2.1** needed for replacement."
+    source: [1, 3]
 video:
   id: AHFFLxEST8Y
   title: "South Korea's unusual approach to boosting its birthrate"
@@ -26,7 +32,7 @@ faq:
   - q: "Why did the rate move up at all?"
     a: "The most defensible explanation is the marriage rebound. Korea has very low non-marital childbearing by OECD standards — the overwhelming majority of births occur within marriage — so marriages are a leading indicator of births with roughly a one-to-two-year lag. Marriages fell sharply during the pandemic and then recovered strongly, and the birth figures are now showing the echo. Policy support, cash incentives, expanded parental leave and corporate schemes plausibly contribute; disentangling their effect from the marriage echo is genuinely hard and anyone claiming precision about it is overstating."
   - q: "Why is the monthly figure bouncing around so much?"
-    a: "Because monthly birth counts are small and seasonal, and the 'monthly fertility rate' is an annualised construction from a short window. The 0.95 / 0.93 / 0.85 sequence across Q1, April and May 2026 is mostly noise plus seasonality. Use annual figures for anything you intend to conclude from, and treat monthly moves as weather rather than climate."
+    a: "Because monthly birth counts are small and seasonal, and the 'monthly fertility rate' is an annualised construction from a short window. The 0.99 / 0.93 / 0.93 sequence across January, February and March 2026 is mostly noise plus seasonality. Use annual figures for anything you intend to conclude from, and treat monthly moves as weather rather than climate."
   - q: "Will the rebound last?"
     a: "The honest answer is that nobody knows. If the driver is a one-off marriage catch-up after the pandemic, it will fade as the backlog clears. If the driver is a genuine shift in the cost and feasibility of family formation — housing, hours, childcare, employer norms — it persists. The test arrives in 2027–2028, once the catch-up cohort has passed through. Watch the marriage series, not the birth series, for the early signal."
   - q: "How does this affect the economy and markets?"
@@ -50,21 +56,27 @@ resources:
     url: "https://www.kihasa.re.kr/english"
     note: "Research on the drivers of low fertility, in English."
 sources:
-  - title: "Korea's birth rate rises to 0.93, but population shrinks for 78th month"
-    url: "https://en.sedaily.com/finance/2026/06/24/koreas-birth-rate-rises-to-093-but-population-shrinks-for"
-    publisher: "Seoul Economic Daily, June 2026"
+  - title: "KOSIS — births, deaths, marriages and fertility statistics"
+    url: "https://kosis.kr/eng/"
+    publisher: "Statistics Korea"
+    accessed: 2026-08-13
+    primary: true
   - title: "Korea's birthrate rises at fastest pace on record in Q1"
     url: "https://www.koreajoongangdaily.com/korea/koreas-birthrate-rises-at-fastest-pace-on-record-in-q1/12587130"
     publisher: "Korea JoongAng Daily, 2026"
+    accessed: 2026-08-13
+  - title: "Korea's birth rate rises to 0.93, but population shrinks for 78th month"
+    url: "https://en.sedaily.com/finance/2026/06/24/koreas-birth-rate-rises-to-093-but-population-shrinks-for"
+    publisher: "Seoul Economic Daily, June 2026"
+    accessed: 2026-08-13
   - title: "Can Korea's birth rebound close its demographic gap?"
     url: "https://www.koreaherald.com/article/10828131"
     publisher: "The Korea Herald, 2026"
-  - title: "Korea's birth rebound offers hope, but demographic challenges remain"
-    url: "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/08/02/korea039s-birth-rebound-offers-hope-but-demographic-challenges-remain"
-    publisher: "The Star, August 2026"
+    accessed: 2026-08-13
   - title: "South Korea is finally having more babies but can it last?"
     url: "https://www.cnn.com/2026/02/06/asia/south-korea-population-fertility-rate-intl-hnk-dst"
     publisher: "CNN, February 2026"
+    accessed: 2026-08-13
 ---
 
 For a decade, Korea's fertility rate was the world's most-cited demographic statistic — a single number, falling every year, standing in for an entire theory of what modern life does to family formation.
@@ -78,14 +90,15 @@ It has now risen three years running. That is the first genuinely new thing to h
 | 2023 | **0.72** (record low) |
 | 2024 | 0.75 |
 | 2025 | 0.80 |
-| Q1 2026 | **0.95** |
-| April 2026 | 0.93 |
-| May 2026 | 0.85 |
+| January 2026 | 0.99 |
+| February 2026 | 0.93 |
+| March 2026 | 0.93 |
+| **Q1 2026** | **0.95** |
 
-**Q1 2026 births came in at 75,013 — up nearly 15% year on year, the largest quarterly increase on record since the series began in 1981.** On current trajectory, the annual figure could exceed **0.9 for the first time in seven years**.
+**Q1 2026 births came in at 75,013 — up 14.8% year on year, the largest quarterly increase on record in both percentage and absolute terms since the series began in 1981.** Marriages in the same quarter reached **62,309, up 6.1%**. On current trajectory, the annual fertility figure could exceed **0.9 for the first time in seven years**.
 
 > [!WARNING] Do not read the monthly series as a trend
-> The 0.95 → 0.93 → 0.85 sequence across Q1, April and May does not mean the rebound stalled in May. Monthly birth counts are small, strongly seasonal, and the "monthly fertility rate" is annualised from a short window. Journalists reach for whichever month supports the framing they want. **Judge this on annual data.**
+> The 0.99 → 0.93 → 0.93 sequence across January, February and March does not mean the rebound stalled after January. Monthly birth counts are small, strongly seasonal, and the "monthly fertility rate" is annualised from a short window. Journalists reach for whichever month supports the framing they want. **Judge this on annual data.**
 
 ## What is actually driving it
 
