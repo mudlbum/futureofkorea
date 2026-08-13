@@ -38,8 +38,7 @@ API = "https://api.pexels.com/v1/search"
 TIMEOUT = 20
 UA = "futureofkorea-build/1.0 (+https://futureofkorea.com/)"
 
-# Fallback search terms per category, used when a post declares no photo_query
-# and its tags yield nothing useful. Deliberately concrete and Korea-anchored:
+# Fallback search terms per category. Deliberately concrete and Korea-anchored:
 # generic "business" stock photography is what makes a site look like a template.
 CATEGORY_TERMS = {
     "markets":    "Seoul financial district skyline trading",
@@ -51,8 +50,56 @@ CATEGORY_TERMS = {
     "_default":   "Seoul South Korea skyline",
 }
 
+# Subject → a scene that actually exists in a stock library.
+#
+# This is the crux of the relevance problem. An article's own vocabulary is
+# abstract — "HBM4 qualification", "F-2-R regional track", "margin debt" — and
+# no photographer has ever tagged an image with those words. Searching them
+# returns whatever the engine falls back to, which is how you end up with a
+# picture of nothing in particular. So we translate the subject into something
+# photographable first, and search for that.
+#
+# Order matters: the first pattern that matches wins, so put specific subjects
+# above general ones.
+CONCEPT_MAP: list[tuple[str, str]] = [
+    (r"\b(visa|immigration|e-7|f-2|residence|hikorea|passport)",
+     "passport immigration documents desk"),
+    (r"\b(semiconductor|chip|hbm|memory|wafer|foundry|fab)",
+     "semiconductor wafer microchip technology"),
+    (r"\b(birth|fertility|demograph|population|ageing|aging|marriage)",
+     "family children park generations"),
+    (r"\b(won|krw|currency|fx|exchange rate|forex)",
+     "currency exchange banknotes money"),
+    (r"\b(kospi|kosdaq|stock|equit|index|etf|share)",
+     "stock market chart trading screen"),
+    (r"\b(bank of korea|interest rate|inflation|cpi|monetary)",
+     "central bank building finance"),
+    (r"\b(shipbuild|shipyard|vessel)", "shipyard crane vessel construction"),
+    (r"\b(defence|defense|arms|military)", "defence industry aerospace"),
+    (r"\b(battery|ev|electric vehicle|secondary cell)",
+     "electric vehicle battery manufacturing"),
+    (r"\b(export|trade|shipping|customs|container|port)",
+     "container port shipping cargo"),
+    (r"\b(housing|property|jeonse|apartment|real estate)",
+     "Seoul apartment buildings housing"),
+    (r"\b(tax|pension|insurance|nhis|nts)", "tax paperwork calculator desk"),
+    (r"\b(k-pop|kpop|idol|concert|album|hybe|entertainment)",
+     "concert stage lights crowd performance"),
+    (r"\b(drama|film|cinema|netflix|streaming|content)",
+     "film production camera set"),
+    (r"\b(tourism|tourist|travel|visitor)", "Seoul tourists landmark travel"),
+    (r"\b(labour|labor|employment|job|hiring|worker)", "office workers meeting"),
+    (r"\b(regional|rural|province|depopulat)", "Korean rural town countryside"),
+]
+
 STOPWORDS = {"the", "and", "for", "with", "from", "that", "this", "what", "how",
-             "why", "korea", "korean", "2026", "explained", "guide"}
+             "why", "korea", "korean", "2026", "explained", "guide", "compared"}
+
+# A candidate must share at least this many meaningful words with the search
+# concept, judged against Pexels' own description of the photo. Below it we
+# publish a typographic cover instead — an honest abstract card beats a
+# confidently irrelevant photograph.
+MIN_RELEVANCE = 1
 
 
 def _load_index() -> dict:
@@ -68,14 +115,48 @@ def _save_index(data: dict) -> None:
 
 
 def query_for(post: dict) -> str:
-    """Build a search phrase from the post's own front matter."""
+    """
+    Decide what to photograph, in descending order of reliability:
+
+    1. `photo_query` in front matter — the writer naming a concrete scene.
+       Always the best answer, because only the writer knows the piece's image.
+    2. A concept mapped from the title and tags — jargon translated into
+       something a photographer would actually have shot.
+    3. The category default.
+
+    Note what this deliberately does *not* do any more: paste the article's own
+    tags into the search box. "KOSPI Korean stocks Samsung Electronics" is not a
+    photograph of anything, and asking a stock library for it returns noise.
+    """
     if post.get("photo_query"):
         return str(post["photo_query"])
-    tags = [str(t) for t in (post.get("tags") or [])]
-    words = [t for t in tags if t.lower() not in STOPWORDS and not re.fullmatch(r"\d+", t)]
-    if words:
-        return " ".join(words[:3]) + " Korea"
+
+    haystack = " ".join([
+        str(post.get("title", "")),
+        " ".join(str(t) for t in (post.get("tags") or [])),
+        " ".join(str(t) for t in (post.get("about") or [])),
+    ]).lower()
+
+    for pattern, concept in CONCEPT_MAP:
+        if re.search(pattern, haystack):
+            return concept
+
     return CATEGORY_TERMS.get(post.get("category", "_default"), CATEGORY_TERMS["_default"])
+
+
+def _terms(text: str) -> set[str]:
+    return {w for w in re.findall(r"[a-z]+", (text or "").lower())
+            if len(w) > 3 and w not in STOPWORDS}
+
+
+def relevance(photo: dict, query: str) -> int:
+    """How well does this candidate match what we asked for?
+
+    Scored against Pexels' own description of the image rather than its filename
+    or tags, because the description is what a human would write if asked what
+    the picture shows.
+    """
+    return len(_terms(photo.get("alt", "")) & _terms(query))
 
 
 def fetch(post: dict, *, offline: bool = False) -> dict | None:
@@ -95,7 +176,7 @@ def fetch(post: dict, *, offline: bool = False) -> dict | None:
         return None
 
     q = query_for(post)
-    url = f"{API}?{urllib.parse.urlencode({'query': q, 'orientation': 'landscape', 'per_page': 5, 'size': 'large'})}"
+    url = f"{API}?{urllib.parse.urlencode({'query': q, 'orientation': 'landscape', 'per_page': 15, 'size': 'large'})}"
     try:
         req = urllib.request.Request(url, headers={"Authorization": key, "User-Agent": UA})
         with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
@@ -104,7 +185,20 @@ def fetch(post: dict, *, offline: bool = False) -> dict | None:
         print(f"  photos: search failed for {slug} ({type(e).__name__}) — falling back to cover")
         return None
 
-    for photo in data.get("photos", []):
+    # Rank by how well each candidate actually depicts the concept, rather than
+    # trusting the API's own ordering. Ties keep the API's order.
+    candidates = [p for p in data.get("photos", []) if p.get("alt")]
+    ranked = sorted(candidates, key=lambda p: -relevance(p, q))
+
+    best = relevance(ranked[0], q) if ranked else 0
+    if best < MIN_RELEVANCE:
+        print(f"  photos: no relevant match for {slug} (“{q}”, best score {best}) "
+              "— using typographic cover instead")
+        return None
+
+    for photo in ranked:
+        if relevance(photo, q) < MIN_RELEVANCE:
+            break
         src = (photo.get("src") or {}).get("large2x") or (photo.get("src") or {}).get("large")
         credit = (photo.get("photographer") or "").strip()
         if not src or not credit:

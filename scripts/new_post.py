@@ -32,6 +32,12 @@ updated: {date}
 description: "TODO one or two sentence standfirst shown on the page and in cards."
 image_alt: "TODO describes the generated artwork for screen readers"
 tags: [todo, five, to, eight, tags]
+# Name a scene a photographer would actually have shot — "passport immigration
+# desk", "shipyard crane", "trading floor screens". NOT the article's jargon:
+# "HBM4 qualification" is not a photograph of anything. Leave blank and the build
+# infers one from the headline; if nothing matches well it uses a typographic
+# cover rather than an unrelated photo.
+photo_query: ""
 about: ["TODO entity names for schema.org"]
 # Every takeaway must state a **bolded figure** and cite the source it came from
 # by its 1-based index in `sources:` below. validate.py fails the build otherwise.
