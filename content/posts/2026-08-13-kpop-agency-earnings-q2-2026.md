@@ -21,9 +21,9 @@ key_takeaways:
   - text: "SM Entertainment's Q2 consolidated revenue rose **15.4% to ₩349.6bn** with operating profit up **11.0% to ₩52.9bn** — profit growing more slowly than revenue, the same pattern as HYBE."
     source: 3
   - text: "YG's revenue rose **27.2% to ₩127.8bn** on album releases, while JYP — with no tour running — saw revenue fall **15.1% to ₩183bn** and operating profit fall **41.4% to ₩31.0bn**."
-    source: [4, 5]
+    source: [4, 7]
   - text: "The underlying boom is not in doubt: Korea drew **10.71 million** foreign visitors in the first half of 2026, up **21%**, and their card spending passed **₩10tn** three months earlier than in 2025."
-    source: 6
+    source: 5
 chart:
   type: bar
   title: "Q2 2026 operating margin — Korea's four listed K-pop agencies"
@@ -83,10 +83,6 @@ sources:
     url: "https://www.ajupress.com/view/20260807140843132"
     publisher: "Aju Press, August 2026"
     accessed: 2026-08-13
-  - title: "JYP Entertainment's Q2 revenues fell 15.1% YoY, net profit down 40.3%"
-    url: "https://www.musicbusinessworldwide.com/jyp-entertainments-q2-revenues-fell-15-1-yoy-net-profit-down-40-3-in-the-gap-between-stray-kids-world-tours/"
-    publisher: "Music Business Worldwide, August 2026"
-    accessed: 2026-08-13
   - title: "Tourist arrivals to Korea jump as spending tops 10 trillion won"
     url: "https://www.koreajoongangdaily.com/korea/tourist-arrivals-to-korea-jump-as-spending-tops-10-trillion-won/12795821"
     publisher: "Korea JoongAng Daily / Ministry of Culture, Sports and Tourism, July 2026"
@@ -95,9 +91,9 @@ sources:
     url: "https://en.sedaily.com/culture/2026/04/30/korean-content-exports-rise-59-percent-on-k-culture-boom"
     publisher: "Seoul Economic Daily, reporting KOCCA, April 2026"
     accessed: 2026-08-13
-  - title: "DART electronic disclosure system — filings of HYBE, SM, JYP and YG"
+  - title: "Electronic disclosure system — preliminary Q2 2026 results filings of HYBE, SM, JYP and YG"
     url: "https://dart.fss.or.kr/"
-    publisher: "Financial Supervisory Service"
+    publisher: "Financial Supervisory Service (DART)"
     accessed: 2026-08-13
     primary: true
   - title: "Market data portal — prices and market capitalisation, KOSPI and KOSDAQ"
