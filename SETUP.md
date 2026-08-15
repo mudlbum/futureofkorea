@@ -112,3 +112,44 @@ and aggressive placement costs you more in rankings than it earns in clicks.
 Translations are deferred on purpose: machine-translated duplicates of a small post
 archive are the textbook scaled-content-abuse pattern and a common AdSense rejection
 reason. Revisit after approval and 30+ posts.
+
+---
+
+## Are we AdSense-ready yet?
+
+```bash
+python3 build.py && python3 scripts/adsense_ready.py
+```
+
+Reports the whole site against what reviewers actually assess, and tells you
+plainly whether to apply. Eight automated checks plus four you have to confirm
+yourself.
+
+**Do not apply while it reports anything blocking.** A rejection is stickier than
+a delay: reapplying puts you behind the same reviewers with a site they have
+already declined, and "low value content" in particular tends to require a
+substantially larger archive on the second attempt than it would have on the first.
+
+### The four you must confirm
+
+1. **`editor@futureofkorea.com` receives mail.** It is on all eight legal pages and
+   in the structured data. Reviewers test contact routes. Cloudflare Email Routing
+   forwards to Gmail for free.
+2. **The site is indexed.** Search `site:futureofkorea.com`. If nothing appears,
+   Google has not crawled you and neither has the reviewer's expectation of a real
+   site. Requires Search Console verification and a submitted sitemap.
+3. **The domain has been live a while** with some organic history. A domain
+   registered last week with zero impressions is frequently deferred regardless of
+   content quality.
+4. **Financial disclaimers stay on investing pieces.** Already automated in the
+   footer, but check any new format you add.
+
+### After approval
+
+Set `adsense.enabled: true` and the real `publisher_id`, then rebuild.
+`validate.py` refuses to build if `enabled` is true while the ID is a placeholder,
+so you cannot half-enable it.
+
+Then keep density conservative. `seocheck.py` caps one unit per 400 words and
+blocks any ad before 250 words of content, because "ads exceed content" is a
+common post-approval suspension as well as a rejection reason.
