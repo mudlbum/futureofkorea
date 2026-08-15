@@ -189,6 +189,18 @@ def main():
                 gate(h, f"{rel}: {n} {label} — cap is {cap}. "
                         "Keep the ones that earn their space.")
 
+    # ── per-article SEO / GEO / AdSense readiness ────────────────────────────
+    try:
+        import seocheck
+        for f in articles:
+            rel = f.replace(DIST, "")
+            h = open(f, encoding="utf-8").read()
+            slug = os.path.basename(os.path.dirname(f))
+            for problem in seocheck.check(h, slug):
+                gate(h, f"{rel}: {problem}")
+    except Exception as e:                      # noqa: BLE001
+        err(f"SEO/GEO check could not run: {type(e).__name__}: {e}")
+
     # ── AdSense site-quality gate ────────────────────────────────────────────
     # These are the things reviewers and the automated policy scan actually look
     # for. Each one has rejected real sites: duplicate metadata reads as scaled

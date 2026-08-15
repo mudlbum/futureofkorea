@@ -300,3 +300,49 @@ Read each sentence and ask: *could this appear in an article about any country, 
 any year?* If yes, it is filler. "Korea faces significant demographic challenges"
 passes no test. "Korea produced 75,013 babies in the first quarter, and needs
 roughly twice that to hold its population flat" is a sentence about Korea.
+
+---
+
+## SEO, GEO and AdSense readiness (enforced by `scripts/seocheck.py`)
+
+Most of this the build already handles for you — canonical URLs, JSON-LD, OG tags,
+sitemap entries, breadcrumbs, the sources list. What follows is the part that
+depends on how you write the article.
+
+### The opening paragraph is the product
+
+**25–75 words.** It is the passage Google lifts as a featured snippet and the
+passage an LLM quotes when someone asks it about your topic. Answer the headline's
+question in the first paragraph and elaborate in the second — not the other way
+round. Under 25 words carries no answer; over 75 gets truncated mid-sentence.
+
+### Structure
+
+- **At least two H2s**, and never skip a level (no H2 followed by H4). The outline
+  is what determines snippet eligibility and what screen readers navigate by.
+- **Slug under 60 characters**, no filler words. `korea-visa-changes-2026` is right;
+  `a-guide-to-the-new-visa-rules-in-korea-for-2026` is not.
+- **Hero alt text must describe the image, not repeat the headline.** A screen-reader
+  user has already heard the title; repeating it wastes the one chance to describe
+  the picture, and gives image search nothing new.
+
+### FAQ answers must stand alone
+
+**At least 40 words each.** An answer engine lifts the answer without the question,
+so "Yes, in most cases" is useless to it. Write each answer so it makes sense read
+cold. Four good FAQs beat six dutiful ones — and six is over the cap.
+
+### Ad readiness
+
+- **One ad unit per 400 words** of body prose, maximum. Density is scored directly by
+  AdSense site quality and indirectly through Core Web Vitals.
+- **No ad before 250 words** of content. An ad above the first substantial block is
+  the classic "ads exceed content" rejection.
+- Ad slots are placed by the template, so you mostly control this through length —
+  another reason the ceiling exists.
+
+### What earns rankings that none of this can fake
+
+Primary sources, a figure a reader cannot get elsewhere in one place, and a clear
+answer to the question they actually typed. The checks above stop you losing on
+technicalities. They do not substitute for having something to say.
