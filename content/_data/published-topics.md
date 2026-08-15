@@ -3,6 +3,8 @@
 Read this before choosing today's story. Do not re-cover any of these;
 either write something new or update the existing article in place.
 
+- **2026-08-15** — Koreans are switching to floating-rate mortgages just as the Bank of Korea starts hiking  
+  `korea-floating-rate-mortgages-bok-hiking` · bank of korea, base rate, fixed rate mortgage, household credit, household debt, korea mortgage rates
 - **2026-08-15** — What foreign residents actually pay for Korean health insurance in 2026  
   `korea-health-insurance-cost-foreigners-2026` · foreign residents, health insurance premium, korea health insurance, living in korea, local subscriber, long-term care insurance
 - **2026-08-14** — Chips are now 47% of Korea's exports. What happens when prices turn?  
