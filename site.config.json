@@ -115,5 +115,16 @@
     "min_sources": 3,
     "min_primary": 1,
     "note": "Posts dated on or after enforce_from must carry per-figure source indices; validate.py fails the build otherwise. Earlier posts are reported as warnings pending retro-sourcing."
+  },
+  "style": {
+    "enforce_from": "2026-08-15",
+    "length": {
+      "news": "650-1200 words of body prose",
+      "explainer": "1000-1600 words of body prose"
+    },
+    "max_faq": 4,
+    "max_callouts": 3,
+    "max_resources": 5,
+    "note": "Applies to posts published on or after enforce_from. Earlier posts are warned, not failed."
   }
 }

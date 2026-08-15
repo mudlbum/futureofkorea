@@ -227,3 +227,76 @@ If a topic genuinely needs revisiting, do one of these — do not write a near-c
 Two pages on one topic is the most damaging pattern available to a young site:
 Google reads it as scaled content, and the two pages cannibalise each other's
 rankings so neither wins.
+
+---
+
+## Length, and why there is now a ceiling
+
+| Type | Body prose | Reading time |
+|---|---|---|
+| `article_type: news` | **650–1,200 words** | 3–5 min |
+| `article_type: explainer` (default) | **1,000–1,600 words** | 5–7 min |
+
+Enforced by `validate.py` for posts from `style.enforce_from` onward. The count is
+body prose only — takeaways, FAQ, sources and captions are excluded, and they add
+roughly another 600 words of reading on top.
+
+The ceiling matters more than the floor. Length is not a ranking factor; depth is,
+and the two are routinely confused. An over-long article is almost always one that
+made its point and then made it twice more. Readers leave in the middle, which is a
+worse signal than a shorter piece they finished.
+
+**Furniture caps:** 4 FAQ entries, 3 callouts, 5 resource links, 3–5 takeaways. Six
+FAQs and five callout boxes on every article is the clearest signal a page was
+assembled rather than written. Use a callout when a warning genuinely interrupts the
+argument — not once per section because the template has a slot.
+
+## Writing like a person
+
+The goal is a reader who assumes a well-informed human wrote this in one sitting.
+
+**Structure**
+
+- Open with the specific thing that happened, or the question a reader actually has.
+  Never open with context-setting about the region, the era, or "in recent years".
+- Vary paragraph length. Three sentences, then one. A one-line paragraph is the
+  strongest emphasis available and it costs nothing.
+- Vary sentence length hard. Long, qualified sentences that carry a lot of
+  conditional information should be followed by short ones. Like this.
+- Do not summarise what you just said before moving on. Trust the reader.
+- Do not announce structure. No "in this article", "let's explore", "first, let's
+  look at". Just say the thing.
+- Not every section needs a subheading. Two paragraphs under one heading is fine.
+
+**Sentences**
+
+- Active voice, concrete nouns. "The exchange halted trading twice" beats "trading
+  halts were implemented on two occasions".
+- Commit. If the evidence supports a claim, make it. Hedging every sentence reads as
+  evasion, not rigour. Where genuine uncertainty exists, name it once, precisely.
+- One idea per sentence. If you need two commas and an em-dash to hold it together,
+  it is two sentences.
+
+**Never write**
+
+"In today's fast-paced world" · "delve" · "tapestry" · "landscape" (figurative) ·
+"it's important to note" · "navigate the complexities" · "robust" · "leverage" as a
+verb · "seamless" · "game-changer" · "a testament to" · "moreover" · "furthermore" ·
+"it's worth noting that" · "when it comes to" · "in the realm of" · "plays a crucial
+role" · "stands as" · "serves as a reminder".
+
+**Structural tells to avoid**
+
+- The symmetric tricolon: "faster, cheaper, and more reliable". Once per article at
+  most, never twice.
+- "It's not just X — it's Y." Overwhelmingly an AI construction now.
+- Starting consecutive paragraphs with the same word or shape.
+- Ending on an uplifting summary that adds nothing. Stop when the argument stops.
+- Rhetorical questions as section openers.
+
+**The test that catches most of it**
+
+Read each sentence and ask: *could this appear in an article about any country, in
+any year?* If yes, it is filler. "Korea faces significant demographic challenges"
+passes no test. "Korea produced 75,013 babies in the first quarter, and needs
+roughly twice that to hold its population flat" is a sentence about Korea.

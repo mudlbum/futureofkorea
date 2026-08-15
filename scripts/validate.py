@@ -129,18 +129,65 @@ def main():
             articles.append(f)
     if not articles:
         err("no articles found in build output")
+    # ── length gate ──────────────────────────────────────────────────────────
+    # Counted on the article body only, not the whole page. The old check
+    # measured nav, footer, FAQ and sources too, so "900 words" was really
+    # about 400 words of writing — and it had no upper bound at all, which is
+    # how articles drifted towards 1,500-word bodies plus 600 words of furniture.
+    #
+    # Upper bounds matter more than lower ones here. Readers leave; padding does
+    # not rank; and an over-long piece is usually a piece that said its point
+    # three times.
+    # Length and furniture rules apply to posts published on or after this date.
+    # Everything earlier predates the standard and is reported as a warning, so
+    # the archive is not rewritten retroactively.
+    STYLE_ENFORCE_FROM = cfg.get("style", {}).get("enforce_from", "2026-08-15")
+
+    def published(h):
+        m = re.search(r'article:published_time" content="(\d{4}-\d{2}-\d{2})', h)
+        return m.group(1) if m else "9999-99-99"
+
+    def gate(h, msg):
+        (err if published(h) >= STYLE_ENFORCE_FROM else warn)(msg)
+
+    LENGTH = {"news": (650, 1200), "explainer": (1000, 1600)}
     for f in articles:
         rel = f.replace(DIST, "")
         h = open(f, encoding="utf-8").read()
-        words = len(re.findall(r"\w+", re.sub(r"<[^>]+>", " ", h)))
-        if words < 900:
-            err(f"{rel}: only ~{words} words — too thin to publish")
+        m = re.search(r'<div class="prose"[^>]*>(.*?)</div>\s*<(?:aside|section|footer)', h, re.S)
+        prose = m.group(1) if m else h
+        words = len(re.findall(r"\w+", re.sub(r"<[^>]+>", " ", prose)))
+        kind = "news" if 'data-article-type="news"' in h else "explainer"
+        lo, hi = LENGTH[kind]
+        if words < lo:
+            gate(h, f"{rel}: body is ~{words} words — thin for a {kind} piece (min {lo})")
+        elif words > hi:
+            gate(h, f"{rel}: body is ~{words} words — too long for a {kind} piece "
+                    f"(max {hi}). Cut, do not pad: readers leave, and length is not a "
+                    "ranking factor.")
         for needle, label in [("takeaways", "key takeaways block"),
                               ("faq-item", "FAQ section"),
                               ('class="sources"', "sources list"),
                               ("disclosure", "AI/production disclosure")]:
             if needle not in h:
                 err(f"{rel}: missing {label}")
+
+    # ── furniture ceilings ───────────────────────────────────────────────────
+    # Structured blocks are useful in moderation and oppressive in bulk. Six FAQs
+    # and five callouts on every article is the strongest signal a page was
+    # assembled rather than written.
+    for f in articles:
+        rel = f.replace(DIST, "")
+        h = open(f, encoding="utf-8").read()
+        for pattern, cap, label in [
+            (r"<details", 4, "FAQ entries"),
+            (r'class="callout callout-', 3, "callout boxes"),
+            (r'<li[^>]*>\s*<a[^>]*rel="noopener"', 5, "resource links"),
+        ]:
+            n = len(re.findall(pattern, h))
+            if n > cap:
+                gate(h, f"{rel}: {n} {label} — cap is {cap}. "
+                        "Keep the ones that earn their space.")
 
     # ── AdSense site-quality gate ────────────────────────────────────────────
     # These are the things reviewers and the automated policy scan actually look

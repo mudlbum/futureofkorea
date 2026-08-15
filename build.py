@@ -636,7 +636,7 @@ def render_post(p, all_posts):
                jsonld={"@context": "https://schema.org", "@graph": graph})
     doc += header_html(p["category"])
     doc += f"""
-<article class="article">
+<article class="article" data-article-type="{p.get('article_type','explainer')}">
   <div class="wrap wrap-narrow">
     <nav class="crumbs" aria-label="Breadcrumb">
       <ol><li><a href="/">Home</a></li><li><a href="/{p['category']}/">{esc(cat.get('name',''))}</a></li>
