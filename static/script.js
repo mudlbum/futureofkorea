@@ -118,4 +118,41 @@
     io.observe(box);
   })();
 
+
+  // ── Theme toggle ────────────────────────────────────────────────────────
+  // Cycles light → dark → system. "System" means no attribute at all, so the
+  // prefers-color-scheme media query in the stylesheet takes over again.
+  //
+  // The attribute is applied by a tiny inline script in <head> before first
+  // paint; this file only handles the click. Doing it here alone would cause a
+  // visible flash of the wrong theme on every page load.
+  (function () {
+    var KEY = "fok-theme";
+    var btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+    var root = document.documentElement;
+
+    function label() {
+      var t = root.getAttribute("data-theme");
+      var next = t === "light" ? "dark" : (t === "dark" ? "system" : "light");
+      btn.setAttribute("title", "Theme: " + (t || "system") + " — switch to " + next);
+      btn.setAttribute("aria-label", "Colour theme: " + (t || "follows your system") +
+                       ". Activate to switch to " + next + ".");
+    }
+
+    btn.addEventListener("click", function () {
+      var t = root.getAttribute("data-theme");
+      var next = t === "light" ? "dark" : (t === "dark" ? null : "light");
+      try {
+        if (next) { root.setAttribute("data-theme", next); localStorage.setItem(KEY, next); }
+        else { root.removeAttribute("data-theme"); localStorage.removeItem(KEY); }
+      } catch (e) {
+        if (next) root.setAttribute("data-theme", next); else root.removeAttribute("data-theme");
+      }
+      label();
+    });
+
+    label();
+  })();
+
 })();

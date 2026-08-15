@@ -357,11 +357,43 @@ def head(title, description, canonical, *, og_image, og_type="article",
                     "function gtag(){dataLayer.push(arguments)}"
                     f"gtag('js',new Date());"
                     f"gtag('config','{ga}',{{anonymize_ip:true}});</script>")
+    bits.append(
+        "<script>(function(){try{var t=localStorage.getItem('fok-theme');"
+        "if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}"
+        "}catch(e){}})();</script>")
     bits.append("</head>")
     return "\n".join(bits)
 
 
-def header_html(active=""):
+def lang_switch_html(page):
+    """
+    Language switcher. Rendered only when the page actually has a translation.
+
+    A toggle that leads nowhere is worse than no toggle: it promises a Korean
+    site that does not exist and sends the reader to a 404. So this returns an
+    empty string until a post declares `translations:` in its front matter, at
+    which point the switcher appears on both versions automatically.
+
+        translations:
+          ko: /ko/living/korea-visa-changes-2026/
+    """
+    if not page:
+        return ""
+    tr = page.get("translations") or {}
+    if not tr:
+        return ""
+    here = page.get("lang", CFG.get("lang", "en"))
+    labels = {"en": "EN", "ko": "KOR"}
+    parts = [f'<span aria-current="true">{labels.get(here, here.upper())}</span>']
+    for code, url in tr.items():
+        if code != here:
+            parts.append(f'<a href="{esc(url)}" hreflang="{esc(code)}" '
+                         f'lang="{esc(code)}">{labels.get(code, code.upper())}</a>')
+    return ('<div class="lang-switch" role="group" aria-label="Language">'
+            + "".join(parts) + "</div>")
+
+
+def header_html(active="", page=None):
     def _link(n):
         cur = ' aria-current="page"' if n["url"].strip("/") == active else ""
         return '<a href="%s"%s>%s</a>' % (n["url"], cur, esc(n["label"]))
@@ -384,6 +416,16 @@ def header_html(active=""):
     <input type="checkbox" id="navtoggle" class="navtoggle" aria-label="Open menu">
     <label for="navtoggle" class="burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav class="site-nav" aria-label="Primary">{links}</nav>
+    {lang_switch_html(page)}
+    <button type="button" class="theme-toggle" id="theme-toggle"
+            aria-label="Switch colour theme" title="Switch colour theme">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/>
+        <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
+      <svg class="i-auto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/>
+        <path d="M12 3.5v17" /><path d="M12 20.5a8.5 8.5 0 0 0 0-17Z" fill="currentColor" stroke="none"/></svg>
+    </button>
   </div>
 </header>
 <main id="main">"""
@@ -634,7 +676,7 @@ def render_post(p, all_posts):
                og_image=SITE + f"/img/{p['slug']}-og.png", og_type="article",
                published=iso(p["date"]), modified=iso(p["updated"]),
                jsonld={"@context": "https://schema.org", "@graph": graph})
-    doc += header_html(p["category"])
+    doc += header_html(p["category"], p)
     doc += f"""
 <article class="article" data-article-type="{p.get('article_type','explainer')}">
   <div class="wrap wrap-narrow">

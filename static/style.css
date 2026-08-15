@@ -12,8 +12,20 @@
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Source Serif 4",Georgia,"Times New Roman",serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
 }
+/* Dark palette applies in two situations: the reader has explicitly chosen dark,
+   or they have expressed no preference here and their OS asks for dark. The
+   explicit choice always wins, which is why the media query excludes
+   [data-theme="light"] rather than simply being overridden later. */
+:root[data-theme="dark"]{
+    --bg:#0a0e1a; --bg-2:#111726; --bg-3:#1a2133;
+    --ink:#eef1f6; --ink-2:#b3bccc; --ink-3:#8b95a8;
+    --line:#222a3d; --line-2:#2e3850;
+    --accent:#ff4d63; --accent-2:#5aa0ff; --link:#7db2ff;
+    --markets:#ff4d63; --technology:#5aa0ff; --living:#3fd6a4; --society:#a882ff; --policy:#ffa733; --kcontent:#ff2e88;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -14px rgba(0,0,0,.7);
+}
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme="light"]){
     --bg:#0a0e1a; --bg-2:#111726; --bg-3:#1a2133;
     --ink:#eef1f6; --ink-2:#b3bccc; --ink-3:#8b95a8;
     --line:#222a3d; --line-2:#2e3850;
@@ -527,3 +539,30 @@ sup.cite a:hover{transform:translate3d(0,-2px,0) scale(1.12)}
 .responding-quote cite{font-style:normal;font-weight:650}
 .responding-context{margin:12px 0 0}
 .responding-note{margin:12px 0 0;padding-top:12px;border-top:1px dashed var(--line-2)}
+
+/* ─── theme toggle ────────────────────────────────────────────────────────
+   Three states cycling light → dark → system. "System" is the default and is
+   worth keeping: most readers never touch this, and following the OS is the
+   right behaviour for them.                                             */
+.theme-toggle{display:inline-grid;place-items:center;width:38px;height:38px;
+  margin-left:8px;border-radius:999px;border:1px solid var(--line);
+  background:transparent;color:var(--ink-2);cursor:pointer;flex:0 0 auto;
+  transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease}
+.theme-toggle:hover{background:var(--bg-2);color:var(--ink);border-color:var(--line-2)}
+.theme-toggle:active{transform:scale(.94)}
+.theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;
+  stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.theme-toggle .i-sun,.theme-toggle .i-moon,.theme-toggle .i-auto{display:none}
+:root[data-theme="light"] .theme-toggle .i-sun{display:block}
+:root[data-theme="dark"] .theme-toggle .i-moon{display:block}
+:root:not([data-theme]) .theme-toggle .i-auto{display:block}
+@media (prefers-reduced-motion:reduce){.theme-toggle{transition:none}}
+
+/* ─── language switcher (only rendered when a translation exists) ─────── */
+.lang-switch{display:inline-flex;align-items:center;gap:2px;margin-left:8px;
+  border:1px solid var(--line);border-radius:999px;padding:2px;flex:0 0 auto}
+.lang-switch a,.lang-switch span{font-size:.78rem;font-weight:700;letter-spacing:.04em;
+  padding:5px 10px;border-radius:999px;text-decoration:none;color:var(--ink-3);
+  transition:background .2s ease,color .2s ease}
+.lang-switch a:hover{color:var(--ink);background:var(--bg-2)}
+.lang-switch [aria-current="true"]{background:var(--ink);color:var(--bg)}
