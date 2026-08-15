@@ -411,7 +411,7 @@ def header_html(active="", page=None):
         <circle cx="20" cy="20" r="11" fill="none" stroke="var(--accent-2)" stroke-width="3"
                 stroke-dasharray="42 27" transform="rotate(140 20 20)"/>
       </svg>
-      <span class="brand-text"><strong>Future</strong> of Korea</span>
+      <span class="brand-text" translate="no"><strong>Future</strong> of Korea</span>
     </a>
     <input type="checkbox" id="navtoggle" class="navtoggle" aria-label="Open menu">
     <label for="navtoggle" class="burger" aria-hidden="true"><span></span><span></span><span></span></label>
@@ -439,7 +439,7 @@ def footer_html():
 <footer class="site-footer">
   <div class="wrap footer-grid">
     <div>
-      <p class="footer-brand"><strong>Future of Korea</strong></p>
+      <p class="footer-brand" translate="no"><strong>Future of Korea</strong></p>
       <p class="muted">{esc(CFG['tagline'])}</p>
       <p class="muted small">Independent English-language analysis of the Korean economy,
       technology industry, capital markets and society. Published from Seoul time (KST).</p>

@@ -138,8 +138,8 @@ def render(data: dict) -> str:
             f'<div class="now-cell now-fx"{stale}>'
             f'<span class="now-icon" aria-hidden="true">₩</span>'
             f'<span class="now-k">Won / Dollar</span>'
-            f'<span class="now-v">₩{fx["usd_krw"]:,.2f}<span class="now-unit"> per $1</span></span>'
-            f'<span class="now-s">$1 = ₩{fx["usd_krw"]:,.0f} · ₩1,000 = ${1000 * krw_usd:,.2f}</span>'
+            f'<span class="now-v" translate="no">₩{fx["usd_krw"]:,.2f}<span class="now-unit"> per $1</span></span>'
+            f'<span class="now-s" translate="no">$1 = ₩{fx["usd_krw"]:,.0f} · ₩1,000 = ${1000 * krw_usd:,.2f}</span>'
             f'</div>')
     if wx:
         stale = ' data-stale="1"' if wx.get("stale") else ""
@@ -150,7 +150,7 @@ def render(data: dict) -> str:
             f'<div class="now-cell now-wx"{stale}>'
             f'<span class="now-icon" aria-hidden="true">{wx["glyph"]}</span>'
             f'<span class="now-k">Seoul right now</span>'
-            f'<span class="now-v">{wx["temp_c"]}<span class="now-unit">°C</span></span>'
+            f'<span class="now-v" translate="no">{wx["temp_c"]}<span class="now-unit">°C</span></span>'
             f'<span class="now-s">{wx["label"]}{" · " + rng if rng else ""}</span>'
             f'</div>')
 
