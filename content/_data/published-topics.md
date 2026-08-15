@@ -3,6 +3,8 @@
 Read this before choosing today's story. Do not re-cover any of these;
 either write something new or update the existing article in place.
 
+- **2026-08-15** — What foreign residents actually pay for Korean health insurance in 2026  
+  `korea-health-insurance-cost-foreigners-2026` · foreign residents, health insurance premium, korea health insurance, living in korea, local subscriber, long-term care insurance
 - **2026-08-14** — Chips are now 47% of Korea's exports. What happens when prices turn?  
   `chips-47-percent-korea-exports` · dram, export concentration, korea customs service, korea exports, memory prices, ministry of trade, industry and resources
 - **2026-08-13** — K-pop's first trillion-won quarter: what the touring economy actually earns  
