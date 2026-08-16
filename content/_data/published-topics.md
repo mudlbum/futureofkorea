@@ -3,6 +3,8 @@
 Read this before choosing today's story. Do not re-cover any of these;
 either write something new or update the existing article in place.
 
+- **2026-08-16** — Who gets a Korean pension refund in 2026 — and who pays in for nothing  
+  `korea-pension-refund-2026` · e-9 visa, foreign workers, korea pension refund, living in korea, lump-sum refund, ministry of health and welfare
 - **2026-08-15** — Koreans are switching to floating-rate mortgages just as the Bank of Korea starts hiking  
   `korea-floating-rate-mortgages-bok-hiking` · bank of korea, base rate, fixed rate mortgage, household credit, household debt, korea mortgage rates
 - **2026-08-15** — What foreign residents actually pay for Korean health insurance in 2026  
