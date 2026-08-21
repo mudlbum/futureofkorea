@@ -45,6 +45,7 @@ import glob
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -57,8 +58,13 @@ MIN_SOURCES = 3
 MIN_PRIMARY = 1
 MAX_SOURCE_AGE_DAYS = 400
 MIN_QUANTIFIED = 0.6   # share of takeaways that must carry a figure
-URL_TIMEOUT = 12
+URL_TIMEOUT = 25
 USER_AGENT = "futureofkorea-linkcheck/1.0 (+https://futureofkorea.com/)"
+
+# Status codes that mean "this server does not like HEAD", not "this page is gone".
+# PwC answers HEAD with 500 and GET with 200; others use 400, 403, 405, 406 or 501.
+# On any of these the probe re-asks with GET before calling the link dead.
+HEAD_HOSTILE = (400, 403, 405, 406, 500, 501)
 
 # A "figure" is a bolded span containing a digit, or a bolded span containing a
 # number written as a word. Both are quantitative claims; only the typography differs.
@@ -204,21 +210,34 @@ def check_structure(name: str, meta: dict) -> list[Finding]:
     return f
 
 
-def _probe(url: str) -> tuple[str, int | str]:
+def _probe(url: str, _attempt: int = 1) -> tuple[str, int | str]:
+    """
+    Confirm a URL resolves. Two failure modes are not the same as a dead page:
+
+    * the server rejects HEAD but serves GET — re-ask with GET (see HEAD_HOSTILE);
+    * the request times out once — Korean government hosts are routinely slow to
+      reach from a CI runner abroad. Retry once. A page that is actually gone
+      still fails, because 404 and 410 are answered promptly and are not retried.
+    """
     req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=URL_TIMEOUT) as r:
             return url, r.status
     except urllib.error.HTTPError as e:
-        if e.code in (403, 405, 501):          # server dislikes HEAD, not necessarily dead
+        if e.code in HEAD_HOSTILE:             # server dislikes HEAD, not necessarily dead
             try:
                 req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
                 with urllib.request.urlopen(req, timeout=URL_TIMEOUT) as r:
                     return url, r.status
+            except urllib.error.HTTPError as e2:
+                return url, e2.code
             except Exception as e2:             # noqa: BLE001
                 return url, f"{type(e2).__name__}: {e2}"
         return url, e.code
     except Exception as e:                      # noqa: BLE001
+        if _attempt == 1:
+            time.sleep(2)
+            return _probe(url, _attempt=2)
         return url, f"{type(e).__name__}: {e}"
 
 
