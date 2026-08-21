@@ -288,7 +288,7 @@ def main():
         for f in fc_errors:
             err(f"fact-check — {f}")
         for f in fc_legacy:
-            warn(f"fact-check (pre-cutoff) — {f}")
+            warn(f"fact-check (non-blocking) — {f}")
     except Exception as e:                      # noqa: BLE001
         err(f"fact-check could not run: {type(e).__name__}: {e}")
 

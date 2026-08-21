@@ -47,6 +47,7 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 import yaml
@@ -65,6 +66,32 @@ USER_AGENT = "futureofkorea-linkcheck/1.0 (+https://futureofkorea.com/)"
 # PwC answers HEAD with 500 and GET with 200; others use 400, 403, 405, 406 or 501.
 # On any of these the probe re-asks with GET before calling the link dead.
 HEAD_HOSTILE = (400, 403, 405, 406, 500, 501)
+
+# Domains that hold the primary sources this publication is built on and that a
+# GitHub Actions runner cannot route to. www.law.go.kr returns no DNS record at
+# all from GitHub's resolvers; english.motir.go.kr and dart.fss.or.kr answer
+# intermittently at best. Geo-fencing by the Korean public sector is the cause,
+# and it is not going to change.
+#
+# The trade this encodes: a *network-level* failure on one of these hosts is
+# reported and does not block the deploy, because the alternative is a
+# publication about Korean law that may not cite Korean law. An HTTP status is
+# never excused — a 404 from law.go.kr still fails the build, here as anywhere.
+# What CI no longer catches is link rot on these domains, so a source on this
+# list has to be re-opened by hand when the article is revisited.
+CI_UNROUTABLE = (
+    "law.go.kr", "moleg.go.kr",            # statutes and decrees
+    "motir.go.kr", "moef.go.kr", "molit.go.kr", "mohw.go.kr", "moj.go.kr",
+    "nts.go.kr", "customs.go.kr", "kostat.go.kr", "kosis.kr", "hikorea.go.kr",
+    "bok.or.kr", "fss.or.kr", "fsc.go.kr", "krx.co.kr", "ksd.or.kr",
+    "nhis.or.kr", "nps.or.kr", "kocca.kr", "visitkorea.or.kr", "klri.re.kr",
+)
+
+
+def _ci_unroutable(url: str) -> bool:
+    """True if the URL's host is a known Korean official domain CI cannot reach."""
+    host = (urllib.parse.urlsplit(url).hostname or "").lower()
+    return any(host == d or host.endswith("." + d) for d in CI_UNROUTABLE)
 
 # A "figure" is a bolded span containing a digit, or a bolded span containing a
 # number written as a word. Both are quantitative claims; only the typography differs.
@@ -265,8 +292,22 @@ def check_urls(posts: list[tuple[str, dict]]) -> list[Finding]:
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         for url, status in pool.map(_probe, jobs):
             ok = isinstance(status, int) and status < 400
-            if not ok:
-                for name, idx in jobs[url]:
+            if ok:
+                continue
+            # An HTTP status is the server answering: 404 means the page is gone,
+            # and that fails the build wherever it is hosted. A string here means
+            # the request never got an answer at all — DNS, timeout, reset. On the
+            # Korean official domains that is CI's problem, not the source's.
+            network_level = not isinstance(status, int)
+            excused = network_level and _ci_unroutable(url)
+            for name, idx in jobs[url]:
+                if excused:
+                    findings.append(Finding(
+                        name,
+                        f"source [{idx}] could not be reached from CI ({status}) — {url}. "
+                        "Host is on the CI-unroutable list; verify it by hand.",
+                        fatal=False))
+                else:
                     findings.append(Finding(
                         name, f"source [{idx}] is unreachable ({status}) — {url}"))
     return findings
@@ -305,7 +346,8 @@ def run(offline: bool = False) -> tuple[list[Finding], list[Finding]]:
     else:
         current = {n for n, m in posts if (_as_date(m.get("date")) or dt.date.today()) >= cutoff}
         for f in check_urls(posts):
-            (findings if f.post in current else legacy).append(f)
+            blocking = f.fatal and f.post in current
+            (findings if blocking else legacy).append(f)
     return findings, legacy
 
 

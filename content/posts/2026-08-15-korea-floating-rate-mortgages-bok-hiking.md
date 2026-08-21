@@ -6,7 +6,7 @@ meta: "The fixed-rate share of new Korean mortgages fell from 90.2% to 37.7% in 
 category: policy
 article_type: explainer
 date: 2026-08-15
-updated: 2026-08-15
+updated: 2026-08-20
 description: "Korean borrowers spent the first half of 2026 abandoning fixed-rate mortgages for floating ones. The Bank of Korea spent July raising rates for the first time in more than three years."
 image_alt: "Typographic cover showing the collapse in the fixed-rate share of new Korean mortgage lending between November 2025 and June 2026"
 tags: [bank of korea, base rate, household debt, korea mortgage rates, monetary policy, fixed rate mortgage, variable rate mortgage, household credit]
@@ -14,7 +14,7 @@ photo_query: "bank branch counter"
 about: ["Bank of Korea", "South Korea", "Monetary Policy Board", "Household Credit"]
 key_takeaways:
   - text: "The fixed-rate share of new bank mortgage lending in Korea fell to **37.7%** in June 2026, from 90.2% in November 2025 — the lowest reading since February 2014."
-    source: 3
+    source: [3, 7]
   - text: "The Bank of Korea raised its base rate to **2.75%** on 16 July 2026, on a unanimous 7-0 vote, its first increase in more than three years."
     source: [1, 6]
   - text: "Korean banks charged an average **4.36%** on new mortgages in June 2026 — 4.53% on fixed-rate loans against 4.27% on variable-rate ones."
@@ -56,10 +56,10 @@ sources:
     publisher: "Ministry of Economy and Finance, August 2026"
     accessed: 2026-08-15
     primary: true
-  - title: "한은 6월 금융기관 가중평균금리 — 주담대 고정금리 비중 37.7%"
-    url: "https://www.newspim.com/news/view/20260728000466"
-    publisher: "Newspim, July 2026"
-    accessed: 2026-08-15
+  - title: "6월 주담대 금리 4.36%로 상승…고정·변동差 0.26%P까지 확대"
+    url: "https://www.asiae.co.kr/article/2026072809433967113"
+    publisher: "Asia Economy, 28 July 2026, reporting the Bank of Korea's '2026년 6월 금융기관 가중평균금리' release"
+    accessed: 2026-08-20
   - title: "Household credit rises for 8th quarter in Q1 amid tighter lending regulations"
     url: "https://www.koreatimes.co.kr/economy/20260519/household-credit-rises-for-8th-quarter-in-q1-amid-tighter-lending-regulations"
     publisher: "The Korea Times, May 2026"
@@ -73,6 +73,11 @@ sources:
     url: "https://www.upi.com/Top_News/World-News/2026/07/16/bank-of-korea-rate-hike/9471784238480/"
     publisher: "UPI / Asia Today, July 2026"
     accessed: 2026-08-15
+  - title: "예금은행 가중평균금리 — 대출금리(신규취급액 기준), 1996.01–2026.06"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=301&tblId=DT_121Y006"
+    publisher: "Bank of Korea series published via KOSIS, Statistics Korea — the monthly fixed-rate share, including November 2025 and June 2026"
+    accessed: 2026-08-20
+    primary: true
 ---
 
 In November 2025, 90.2% of new mortgage lending at Korean banks carried a fixed rate. By June 2026 that share was 37.7%. Over the same stretch the Bank of Korea stopped cutting and started raising, lifting its base rate to 2.75% on 16 July. Korean borrowers moved to floating rates exactly as floating got expensive.
