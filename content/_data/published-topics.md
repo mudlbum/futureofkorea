@@ -3,6 +3,8 @@
 Read this before choosing today's story. Do not re-cover any of these;
 either write something new or update the existing article in place.
 
+- **2026-08-21** — Korea extended its foreign home-buying permits. The buyers were never in Gangnam.  
+  `korea-foreign-home-permit-2026` · foreign buyers, foreign property korea, gyeonggi, gyeonggi province, incheon, korea property rules
 - **2026-08-20** — Korea raised the tax on selling shares in 2026 — without a vote in parliament  
   `korea-stock-transaction-tax-2026` · dividend withholding tax, foreign investor, korea exchange, korea tax, korean stocks, kosdaq
 - **2026-08-17** — Korea won 17% of the world's ship orders this year. Its yards are making record money anyway.  
