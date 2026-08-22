@@ -3,6 +3,8 @@
 Read this before choosing today's story. Do not re-cover any of these;
 either write something new or update the existing article in place.
 
+- **2026-08-22** — Korea's tourism balance turned positive in March. Duty-free sales are still down 60%.  
+  `korea-tourism-balance-surplus-2026` · balance of payments, bank of korea, duty free, inbound tourism, korea tourism balance, korea tourism organization
 - **2026-08-21** — Korea extended its foreign home-buying permits. The buyers were never in Gangnam.  
   `korea-foreign-home-permit-2026` · foreign buyers, foreign property korea, gyeonggi, gyeonggi province, incheon, korea property rules
 - **2026-08-20** — Korea raised the tax on selling shares in 2026 — without a vote in parliament  
